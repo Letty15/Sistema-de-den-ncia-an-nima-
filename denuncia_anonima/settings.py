@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'denuncias',
     'conteudos',
     'administracao',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
