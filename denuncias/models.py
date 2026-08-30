@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+from usuarios.models import usuarios
 
 class TipoViolencia(models.Model):
     nome = models.CharField(max_length=100)
@@ -17,7 +17,7 @@ class Denuncia(models.Model):
     ]
     protocolo = models.CharField(max_length=12, unique=True)
     tipo_violencia = models.ForeignKey(TipoViolencia, on_delete=models.PROTECT, related_name='denuncias')
-    denunciante = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='denuncias')
+    denunciante = models.ForeignKey(usuarios, on_delete=models.PROTECT, related_name='denuncias')
     descricao = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
     data_registro = models.DateField(auto_now_add=True)
@@ -34,7 +34,7 @@ class Imagem(models.Model):
 
 class RespostaDenuncia(models.Model):
     denuncia = models.ForeignKey(Denuncia, on_delete=models.CASCADE, related_name='respostas')
-    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='respostas_dadas')
+    autor = models.ForeignKey(usuarios, on_delete=models.SET_NULL, null=True, related_name='respostas_dadas')
     mensagem = models.TextField()
     data = models.DateTimeField(auto_now_add=True)
     
