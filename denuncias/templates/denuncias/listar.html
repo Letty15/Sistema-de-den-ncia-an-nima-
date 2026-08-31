@@ -53,15 +53,15 @@
                 <td>{{ denuncia.data_registro }}</td>
                 <td>{{ denuncia.tipo_violencia.nome }}</td>
                 <td>
-                    {% if denuncia.imagem_set.count > 0 %}
-                        {{ denuncia.imagem_set.count }} imagem(ns)
+                    {% if denuncia.evidencias.count > 0 %}
+                        {{ denuncia.evidencias.count }} imagem(ns)
                     {% else %}
                         Nenhuma
                     {% endif %}
                 </td>
                 <td>
-                    {% if denuncia.respostadenuncia_set.count > 0 %}
-                        {{ denuncia.respostadenuncia_set.count }} resposta(s)
+                    {% if denuncia.respostas.count > 0 %}
+                        {{ denuncia.respostas.count }} resposta(s)
                     {% else %}
                         Nenhuma
                     {% endif %}
@@ -76,3 +76,4 @@
         </tbody>
     </table>
 </body>
+</html>
