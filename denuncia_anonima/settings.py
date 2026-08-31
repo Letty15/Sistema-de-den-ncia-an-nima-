@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'conteudos',
     'administracao',
     'usuarios',
+    'respostas',
 ]
 
 MIDDLEWARE = [
