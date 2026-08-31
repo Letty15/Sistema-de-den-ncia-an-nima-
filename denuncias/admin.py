@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TipoViolencia, Denuncia, Imagem, RespostaDenuncia
+from .models import TipoViolencia, Denuncia, Imagem
 
 @admin.register(Denuncia)
 class DenunciaAdmin(admin.ModelAdmin):
@@ -8,6 +8,5 @@ class DenunciaAdmin(admin.ModelAdmin):
     
 admin.site.register(TipoViolencia)
 admin.site.register(Imagem)
-admin.site.register(RespostaDenuncia)
 
 # Register your models here.
