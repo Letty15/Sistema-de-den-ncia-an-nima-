@@ -31,11 +31,5 @@ class Imagem(models.Model):
     altura = models.IntegerField()
     formato = models.CharField(max_length=20)
     dados = models.ImageField(upload_to='evidencias/')
-
-class RespostaDenuncia(models.Model):
-    denuncia = models.ForeignKey(Denuncia, on_delete=models.CASCADE, related_name='respostas')
-    autor = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, related_name='respostas_dadas')
-    mensagem = models.TextField()
-    data = models.DateTimeField(auto_now_add=True)
     
 # Create your models here.
