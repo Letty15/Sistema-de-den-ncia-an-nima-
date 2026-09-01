@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Denúncias</title>
+    <style>
+        /* Linhas cinzas apenas embaixo das células */
+        table td, table th {
+            border-bottom: 1px solid #c0bebe;
+        }
+        /* Remove a borda da última linha */
+        table tr:last-child td {
+            border-bottom: none;
+        }
+        h1{
+            color: #f56a93;
+        }
+        table {
+            border: none;
+            margin-top: 20px;
+            width: 80%;
+            border-collapse: collapse; /* garante que as bordas fiquem coladas */
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: #000000;
+        }
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Denúncias Registradas</h1>
+    
+    <table cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Protocolo</th>
+                <th>Descrição</th>
+                <th>Status</th>
+                <th>Data Registro</th>
+                <th>Tipo de Violência</th>
+                <th>Imagens</th>
+                <th>Respostas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for denuncia in denuncias %}
+            <tr>
+                <td>{{ denuncia.protocolo }}</td>
+                <td>{{ denuncia.descricao }}</td>
+                <td>{{ denuncia.status }}</td>
+                <td>{{ denuncia.data_registro }}</td>
+                <td>{{ denuncia.tipo_violencia.nome }}</td>
+                <td>
+                    {% if denuncia.imagem_set.count > 0 %}
+                        {{ denuncia.imagem_set.count }} imagem(ns)
+                    {% else %}
+                        Nenhuma
+                    {% endif %}
+                </td>
+                <td>
+                    {% if denuncia.respostadenuncia_set.count > 0 %}
+                        {{ denuncia.respostadenuncia_set.count }} resposta(s)
+                    {% else %}
+                        Nenhuma
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Nenhuma denúncia registrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
