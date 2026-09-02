@@ -4,7 +4,12 @@ from .models import Denuncia, Usuario
 def listar_denuncia(request):
     usuario = Usuario.objects.get(user=request.user)
     denuncias = Denuncia.objects.filter(denunciante=usuario)
-    return render(request, 'denuncias/listar.html', {'denuncias': denuncias})
-
-
+    return render(
+        request,
+        'denuncias/listar.html',
+        {
+            'denuncias': denuncias,
+            'usuario': usuario  # adiciona o usuário no contexto
+        }
+    )
 # Create your views here.

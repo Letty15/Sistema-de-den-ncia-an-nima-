@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <h1>Denúncias Registradas</h1>
+    <h1>Denúncias Registradas de {{ usuario.user.username }}</h1>
     
     <table cellpadding="8" cellspacing="0">
         <thead>
@@ -41,6 +41,7 @@
                 <th>Tipo de Violência</th>
                 <th>Imagens</th>
                 <th>Respostas</th>
+                <th>Usuário</th> <!-- nova coluna -->
             </tr>
         </thead>
         <tbody>
@@ -65,13 +66,13 @@
                         Nenhuma
                     {% endif %}
                 </td>
+                <td>{{ denuncia.denunciante.user.username }}</td> <!-- mostra o nome do usuário -->
             </tr>
             {% empty %}
             <tr>
-                <td colspan="7">Nenhuma denúncia registrada.</td>
+                <td colspan="8">Nenhuma denúncia registrada.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
-</html>
