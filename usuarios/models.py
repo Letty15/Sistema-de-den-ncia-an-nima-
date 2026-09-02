@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Usuario(models.Model):
+class Usuario(models.User):
     user= models.OneToOneField(User, on_delete=models.CASCADE, related_name='usuario')
     cpf = models.CharField(max_length=14, unique=True)
     rg = models.CharField(max_length=20, unique=True) 
