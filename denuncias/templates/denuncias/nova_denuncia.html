@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Nova Denúncia</title>
+    <style>
+        h1 {
+            color: #f56a93;
+        }
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: #000000;
+        }
+        form {
+            width: 400px;
+            margin-top: 20px;
+        }
+        form p {
+            margin-bottom: 14px;
+        }
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #c0bebe;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        textarea {
+            min-height: 100px;
+        }
+        button {
+            background: #f56a93;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .erro {
+            color: #d33;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registrar Denúncia</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Denúncia</button>
+    </form>
+
+    <p><a href="{% url 'listar_denuncia' %}">Ver denúncias registradas</a></p>
+</body>
+</html>
