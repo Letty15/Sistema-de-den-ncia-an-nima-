@@ -33,7 +33,7 @@
     "user": 1,
     "content_type": 10,
     "object_id": "1",
-    "object_repr": "AgressÒo fÝsica",
+    "object_repr": "Agressão física",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -853,7 +853,7 @@
   "model": "denuncias.tipoviolencia",
   "pk": 1,
   "fields": {
-    "nome": "AgressÒo fÝsica",
+    "nome": "Agressão física",
     "descricao": "Marcas roxas e rosto vermelho"
   }
 },
@@ -864,7 +864,7 @@
     "protocolo": "3",
     "tipo_violencia": 1,
     "denunciante": 1,
-    "descricao": "Ele agarrou o meu braþo, deixando marcas roxas, e me deu um tapa na cara, deixando-a vermelha",
+    "descricao": "Ele agarrou o meu braço, deixando marcas roxas, e me deu um tapa na cara, deixando-a vermelha",
     "status": "pendente",
     "data_registro": "2026-08-30"
   }
@@ -883,22 +883,20 @@
 },
 {
   "model": "usuarios.usuario",
-  "pk": 1,
+  "pk": 2,
   "fields": {
-    "user": 2,
     "cpf": "529.982.247-25",
     "rg": "3.021.415-4",
-    "endereco": "Avenida Paulista, 1578, Bloco A, apartamento 201, bairro Bela Vista, 01310-220 SÒo Paulo, SP"
+    "endereco": "Avenida Paulista, 1578, Bloco A, apartamento 201, bairro Bela Vista, 01310-220 São Paulo, SP"
   }
 },
 {
   "model": "usuarios.usuario",
-  "pk": 2,
+  "pk": 1,
   "fields": {
-    "user": 1,
     "cpf": "111.444.777-35",
     "rg": "45.678.912-3",
-    "endereco": "Rua das Flores, 123 û Centro, SÒo Paulo/SP û CEP 01001-000"
+    "endereco": "Rua das Flores, 123 – Centro, São Paulo/SP – CEP 01001-000"
   }
 }
 ]
