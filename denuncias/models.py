@@ -8,6 +8,8 @@ class TipoViolencia(models.Model):
     def __str__(self):
         return self.nome
 
+import uuid
+
 class Denuncia(models.Model):
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
@@ -15,15 +17,21 @@ class Denuncia(models.Model):
         ('encaminhada', 'Encaminhada ao CAE'),
         ('concluida', 'Concluída'),
     ]
-    protocolo = models.CharField(max_length=12, unique=True)
+    protocolo = models.CharField(max_length=12, unique=True, blank=True)
     tipo_violencia = models.ForeignKey(TipoViolencia, on_delete=models.PROTECT, related_name='denuncias')
     denunciante = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name='denuncias')
     descricao = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
     data_registro = models.DateField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.protocolo:
+            self.protocolo = uuid.uuid4().hex[:12].upper()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.protocolo
+
 
 class Imagem(models.Model):
     denuncia = models.ForeignKey(Denuncia, on_delete=models.CASCADE, related_name='evidencias')
