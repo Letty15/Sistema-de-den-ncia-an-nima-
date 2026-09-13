@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Conteúdo</title>
+</head>
+<body>
+    <h1>Publicar Conteúdo Educativo</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Publicar</button>
+    </form>
+
+    <p><a href="{% url 'listar_conteudo' %}">Ver conteúdos publicados</a></p>
+</body>
+</html>

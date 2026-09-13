@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Conteúdo</title>
+</head>
+<body>
+    <h1>Excluir "{{ conteudo.titulo }}"?</h1>
+    <p>Essa ação não pode ser desfeita.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmar exclusão</button>
+    </form>
+
+    <p><a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}">Cancelar</a></p>
+</body>
+</html>

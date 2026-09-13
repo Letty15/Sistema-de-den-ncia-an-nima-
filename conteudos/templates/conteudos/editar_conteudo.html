@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Conteúdo</title>
+</head>
+<body>
+    <h1>Editar Conteúdo</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar alterações</button>
+    </form>
+
+    <p><a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}">Cancelar</a></p>
+</body>
+</html>
