@@ -49,6 +49,20 @@
             color: #d33;
             font-size: 13px;
         }
+        .btn{
+            margin-top: 10px;
+            display: inline-block;
+            padding: 8px 16px;
+            background: #8152b5;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+        }
+        .btn:hover {
+            background: #b995d4;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +74,6 @@
         <button type="submit">Salvar Resposta</button>
     </form>
 
-    <p><a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}">Ver respostas registradas</a></p>
+    <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="btn">Voltar</a>
 </body>
 </html>

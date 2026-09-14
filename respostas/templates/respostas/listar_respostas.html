@@ -4,6 +4,56 @@
     <meta charset="UTF-8">
     <title>Lista de Respostas</title>
     <style>
+        .Criar{
+            display: inline-block;
+            padding: 8px 16px;
+            margin-top: 5px;
+            background: #5dce62;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .Criar:hover {
+            background: #9adb83;
+        }
+        .Detalhes .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #4ba3c4;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+        .Detalhes .btn:hover {
+            background: #7ab1e0;
+        }
+        .Deletar .btn{
+            display: inline-block;
+            padding: 8px 16px;
+            background: #be4e4e;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+        .Deletar .btn:hover {
+            background: #e68f8f;
+        }
+        .Editar .btn{
+            display: inline-block;
+            padding: 8px 16px;
+            background: #8152b5;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+        .Editar .btn:hover {
+            background: #b995d4;
+        }
         /* Linhas cinzas apenas embaixo das células */
         table td, table th {
             border-bottom: 1px solid #c0bebe;
@@ -30,7 +80,8 @@
 </head>
 <body>
     <h1>Respostas relacionadas</h1>
-    
+
+    <a href="{% url 'nova_resposta' protocolo=denuncia.protocolo %}" class="Criar">+Adicionar</a>
     <table cellpadding="8" cellspacing="0">
         <thead>
             <tr>
@@ -47,6 +98,15 @@
                 <td>{{ resposta.autor.username }}</td>
                 <td>{{ resposta.mensagem }}</td>
                 <td>{{ resposta.data }}</td>
+                <td class="Detalhes">
+                    <a href="{% url 'detalhar_resposta' id=resposta.id %}" class="btn">Detalhes</a>
+                </td>
+                <td class="Deletar">
+                    <a href="{% url 'deletar_resposta' id=resposta.id %}" class="btn">Deletar</a>
+                </td>
+                <td class="Editar">
+                    <a href="{% url 'editar_resposta' id=resposta.id %}" class="btn">Editar</a>
+                </td>
             </tr>
             {% empty %}
             <tr>
