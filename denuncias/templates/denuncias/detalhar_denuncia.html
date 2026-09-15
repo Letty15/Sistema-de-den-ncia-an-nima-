@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Denúncia {{ denuncia.protocolo }}</title>
+    <style>
+        h1 { color: #f56a93; }
+        body { font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; }
+        a { color: #f56a93; }
+    </style>
+</head>
+<body>
+    <h1>Denúncia {{ denuncia.protocolo }}</h1>
+    <p><strong>Status:</strong> {{ denuncia.get_status_display }}</p>
+    <p><strong>Tipo de violência:</strong> {{ denuncia.tipo_violencia.nome }}</p>
+    <p><strong>Data de registro:</strong> {{ denuncia.data_registro }}</p>
+    <p><strong>Denunciante:</strong> {{ denuncia.denunciante.username }}</p>
+    <p><strong>Descrição:</strong><br>{{ denuncia.descricao }}</p>
+
+    <p><strong>Evidências:</strong>
+        {% if denuncia.evidencias.count > 0 %}{{ denuncia.evidencias.count }} imagem(ns){% else %}Nenhuma{% endif %}
+    </p>
+    <p><strong>Respostas:</strong>
+        {% if denuncia.respostas.count > 0 %}{{ denuncia.respostas.count }} resposta(s){% else %}Nenhuma{% endif %}
+    </p>
+
+    <p>
+        <a href="{% url 'editar_denuncia' protocolo=denuncia.protocolo %}">Editar</a> |
+        <a href="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}">Excluir</a> |
+        <a href="{% url 'listar_denuncia' %}">Voltar à lista</a>
+    </p>
+</body>
+</html>

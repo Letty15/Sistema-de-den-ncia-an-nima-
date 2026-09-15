@@ -42,6 +42,7 @@
                 <th>Imagens</th>
                 <th>Respostas</th>
                 <th>Denunciante</th> <!-- nova coluna -->
+                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -67,6 +68,11 @@
                     {% endif %}
                 </td>
                 <td>{{ denuncia.denunciante.username }}</td> <!-- mostra o nome do usuário -->
+                <td>
+                   <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Ver</a> |
+                   <a href="{% url 'editar_denuncia' protocolo=denuncia.protocolo %}">Form</a> |
+                   <a href="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}">Excluir</a>
+               </td>
             </tr>
             {% empty %}
             <tr>

@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Nova Denúncia</title>
+    <title>{% if denuncia %}Editar Denúncia{% else %}Nova Denúncia{% endif %}</title>
     <style>
         h1 {
             color: #f56a93;
@@ -52,14 +52,18 @@
     </style>
 </head>
 <body>
-    <h1>Registrar Denúncia</h1>
+    <h1>{% if denuncia %}Editar Denúncia {{ denuncia.protocolo }}{% else %}Registrar Denúncia{% endif %}</h1>
 
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Enviar Denúncia</button>
+        <button type="submit">{% if denuncia %}Salvar alterações{% else %}Enviar Denúncia{% endif %}</button>
     </form>
 
-    <p><a href="{% url 'listar_denuncia' %}">Ver denúncias registradas</a></p>
+    {% if denuncia %}
+        <p><a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Cancelar</a></p>
+    {% else %}
+        <p><a href="{% url 'listar_denuncia' %}">Ver denúncias registradas</a></p>
+    {% endif %}
 </body>
 </html>
