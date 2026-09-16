@@ -7,6 +7,18 @@
         h1 { color: #f56a93; }
         body { font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; }
         a { color: #f56a93; }
+        .link-excluir {
+            background: none;
+            border: none;
+            color: #f56a93;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            font: inherit;
+        }
+        form.inline {
+            display: inline;
+        }
     </style>
 </head>
 <body>
@@ -26,7 +38,11 @@
 
     <p>
         <a href="{% url 'editar_denuncia' protocolo=denuncia.protocolo %}">Editar</a> |
-        <a href="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}">Excluir</a> |
+        <form class="inline" method="post" action="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}">
+            {% csrf_token %}
+            <button type="submit" class="link-excluir">Excluir</button>
+        </form>
+        |
         <a href="{% url 'listar_denuncia' %}">Voltar à lista</a>
     </p>
 </body>

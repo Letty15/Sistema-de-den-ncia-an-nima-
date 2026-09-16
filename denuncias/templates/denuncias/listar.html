@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <title>Lista de Denúncias</title>
     <style>
-        /* Linhas cinzas apenas embaixo das células */
         table td, table th {
             border-bottom: 1px solid #c0bebe;
         }
-        /* Remove a borda da última linha */
         table tr:last-child td {
             border-bottom: none;
         }
@@ -19,18 +17,30 @@
             border: none;
             margin-top: 20px;
             width: 80%;
-            border-collapse: collapse; /* garante que as bordas fiquem coladas */
+            border-collapse: collapse;
             font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             color: #000000;
         }
         th {
             text-align: left;
         }
+        .link-excluir {
+            background: none;
+            border: none;
+            color: #f56a93;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            font: inherit;
+        }
+        form.inline {
+            display: inline;
+        }
     </style>
 </head>
 <body>
     <h1>Denúncias Registradas</h1>
-    
+
     <table cellpadding="8" cellspacing="0">
         <thead>
             <tr>
@@ -41,8 +51,8 @@
                 <th>Tipo de Violência</th>
                 <th>Imagens</th>
                 <th>Respostas</th>
-                <th>Denunciante</th> <!-- nova coluna -->
-                 <th>Ações</th>
+                <th>Denunciante</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -67,16 +77,19 @@
                         Nenhuma
                     {% endif %}
                 </td>
-                <td>{{ denuncia.denunciante.username }}</td> <!-- mostra o nome do usuário -->
+                <td>{{ denuncia.denunciante.username }}</td>
                 <td>
-                   <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Ver</a> |
-                   <a href="{% url 'editar_denuncia' protocolo=denuncia.protocolo %}">Form</a> |
-                   <a href="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}">Excluir</a>
-               </td>
+                    <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Ver</a> |
+                    <a href="{% url 'editar_denuncia' protocolo=denuncia.protocolo %}">Editar</a> |
+                    <form class="inline" method="post" action="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}">
+                        {% csrf_token %}
+                        <button type="submit" class="link-excluir">Excluir</button>
+                    </form>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8">Nenhuma denúncia registrada.</td>
+                <td colspan="9">Nenhuma denúncia registrada.</td>
             </tr>
             {% endfor %}
         </tbody>
