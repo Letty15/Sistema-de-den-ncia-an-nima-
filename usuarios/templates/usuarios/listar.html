@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuários</title>
+</head>
+<body>
+    <h1>Usuários Cadastrados</h1>
+    <table cellpadding="8" cellspacing="0" border="1">
+        <thead>
+            <tr><th>Username</th><th>CPF</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.cpf }}</td>
+                <td>
+                    <a href="{% url 'detalhar_usuario' pk=usuario.pk %}">Ver</a> |
+                    <a href="{% url 'editar_usuario' pk=usuario.pk %}">Editar</a> |
+                    <a href="{% url 'deletar_usuario' pk=usuario.pk %}">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">Nenhum usuário cadastrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{% url 'cadastrar_usuario' %}">Cadastrar novo usuário</a></p>
+</body>
+</html>

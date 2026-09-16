@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário</title>
+    <style>
+        h1 { color: #f56a93; }
+        body { font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; }
+        form { width: 400px; margin-top: 20px; }
+        form p { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 4px; font-weight: bold; }
+        input { width: 100%; padding: 6px; border: 1px solid #c0bebe; border-radius: 4px; }
+        button { background: #f56a93; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Criar Conta</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>
