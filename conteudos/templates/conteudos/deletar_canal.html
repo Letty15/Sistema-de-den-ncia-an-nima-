@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Canal</title>
+
+    <style>
+        body {
+            color: #000000;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #f56a93;
+        }
+
+        .mensagem {
+            margin: 20px 0;
+            font-size: 16px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                         'Lucida Grande', 'Lucida Sans Unicode',
+                         Geneva, Verdana, sans-serif;
+        }
+
+        .alerta {
+            color: #b60e0e;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                         'Lucida Grande', 'Lucida Sans Unicode',
+                         Geneva, Verdana, sans-serif;
+        }
+
+        button {
+            background-color: #f56a93;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+        }
+
+        button:hover {
+            background-color: #e05581;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #8152b5;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+        }
+        .btn:hover {
+            background: #b995d4;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Excluir "{{ canal.nome }}"?</h1>
+
+    <p class="mensagem">
+        Tem certeza que deseja excluir este canal de apoio?
+    </p>
+
+    <p class="alerta">
+        Essa ação não pode ser desfeita.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">
+            Confirmar exclusão
+        </button>
+
+    </form>
+
+    <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
+
+</body>
+</html>
