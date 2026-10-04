@@ -1,7 +1,5 @@
-initial_users.json
 __pycache__/
 *.pyc
 venv/
 db.sqlite3
-*.sqlite3
 media/
