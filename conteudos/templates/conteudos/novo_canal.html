@@ -2,7 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>{% if denuncia %}Editar Denúncia{% else %}Nova Denúncia{% endif %}</title>
+    <title>Novo Canal de Apoio</title>
+
     <style>
         h1 {
             color: #f56a93;
@@ -16,7 +17,7 @@
         }
         form p {
             margin-bottom: 14px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
         label {
             display: block;
@@ -28,7 +29,8 @@
             padding: 6px;
             border: 1px solid #c0bebe;
             border-radius: 4px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family: inherit;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
         textarea {
             min-height: 100px;
@@ -41,7 +43,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
         button:hover {
             opacity: 0.9;
@@ -49,10 +51,10 @@
         .erro {
             color: #d33;
             font-size: 13px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
-        a{
-            margin-top: 5px;
+        .btn{
+            margin-top: 10px;
             display: inline-block;
             padding: 8px 16px;
             background: #8152b5;
@@ -62,24 +64,24 @@
             cursor: pointer;
             font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
         }
-        a:hover {
+        .btn:hover {
             background: #b995d4;
         }
     </style>
 </head>
+
 <body>
-    <h1>{% if denuncia %}Editar Denúncia {{ denuncia.protocolo }}{% else %}Registrar Denúncia{% endif %}</h1>
+
+    <h1>Cadastrar Canal de Apoio</h1>
 
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">{% if denuncia %}Salvar alterações{% else %}Enviar Denúncia{% endif %}</button>
+        <button type="submit">Salvar</button>
     </form>
 
-    {% if denuncia %}
-        <p><a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Cancelar</a></p>
-    {% else %}
-        <p><a href="{% url 'listar_denuncia' %}">Ver denúncias registradas</a></p>
-    {% endif %}
+    <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
+
 </body>
 </html>
+

@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Canais</title>
+    <style>
+        .Criar{
+            display: inline-block;
+            padding: 8px 16px;
+            margin-top: 5px;
+            background: #5dce62;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .Criar:hover {
+            background: #9adb83;
+        }
+        .Detalhes .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #4ba3c4;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+        .Detalhes .btn:hover {
+            background: #7ab1e0;
+        }
+        .Deletar .btn{
+            display: inline-block;
+            padding: 8px 16px;
+            background: #be4e4e;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+        .Deletar .btn:hover {
+            background: #e68f8f;
+        }
+        .Editar .btn{
+            display: inline-block;
+            padding: 8px 16px;
+            background: #8152b5;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer; 
+        }
+        .Editar .btn:hover {
+            background: #b995d4;
+        }
+        /* Linhas cinzas apenas embaixo das células */
+        table td, table th {
+            border-bottom: 1px solid #c0bebe;
+        }
+        /* Remove a borda da última linha */
+        table tr:last-child td {
+            border-bottom: none;
+        }
+        h1{
+            color: #f56a93;
+        }
+        table {
+            border: none;
+            margin-top: 20px;
+            width: 80%;
+            border-collapse: collapse; /* garante que as bordas fiquem coladas */
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: #000000;
+        }
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Canais de Apoio</h1>
+    
+    <a href="{% url 'novo_canal' %}" class="Criar">+Adicionar</a>
+
+    <table cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Contato</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for canal in canais %}
+            <tr>
+                <td>{{ canal.nome }}</td>
+                <td>{{ canal.contato }}</td>
+                <td class="Detalhes">
+                    <a href="{% url 'detalhar_canal' pk=canal.pk %}" class="btn">Detalhes</a>
+                </td>
+                <td class="Deletar">
+                    <a href="{% url 'deletar_canal' pk=canal.pk %}" class="btn">Deletar</a>
+                </td>
+                <td class="Editar">
+                    <a href="{% url 'editar_canal' pk=canal.pk %}" class="btn">Editar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Nenhum canal cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
