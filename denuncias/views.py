@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from administracao.decorators import cae_required
+from usuarios.models import Usuario
 from .models import Denuncia
 from .forms import DenunciaForm
-import uuid
 
 
 def listar_denuncia(request):
