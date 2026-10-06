@@ -11,8 +11,8 @@ def cadastrar_usuario(request):
     if request.method == 'POST':
         form = CadastroUsuarioForm(request.POST)
         if form.is_valid():
-            form.save()
-            login(request, usuario) 
+            usuario = form.save()
+            login(request, usuario)
             return redirect('listar_usuario')
     else:
         form = CadastroUsuarioForm()
@@ -22,9 +22,16 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            login(request, form.get_user())
-            next_url = request.POST.get('next') or 'listar_denuncia'
-            return redirect(next_url)
+            user = form.get_user()
+            login(request, user)
+
+            next_url = request.POST.get('next') or request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
+
+            if user.groups.filter(name='CAE').exists():
+                return redirect('listar_denuncia')
+            return redirect('minhas_denuncias')
     else:
         form = AuthenticationForm()
     return render(request, 'usuarios/login.html', {'form': form})
