@@ -124,5 +124,5 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'listar_denuncia'
+LOGIN_REDIRECT_URL = 'minhas_denuncias'
 LOGOUT_REDIRECT_URL = 'login'
