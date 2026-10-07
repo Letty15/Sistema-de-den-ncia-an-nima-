@@ -1,5 +1,4 @@
-from django.contrib.auth.decorators import login_required
-from administracao.decorators import cae_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404, render, redirect
 from denuncias.models import Denuncia
 from .models import RespostaDenuncia
@@ -14,8 +13,9 @@ def listar_respostas(request, protocolo):
     return render(request, 'respostas/listar_respostas.html', {'respostas': respostas, 'denuncia': denuncia})
 
 
-# Criar resposta
-@cae_required
+# Criar 
+@login_required
+@permission_required('respostas.add_respostadenuncia', raise_exception=True)
 def nova_resposta(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
     if request.method == 'POST':
@@ -32,13 +32,15 @@ def nova_resposta(request, protocolo):
 
 # Detalhar resposta
 @login_required
+@permission_required('respostas.view_respostadenuncia', raise_exception=True)
 def detalhar_resposta(request, id):
     resposta = get_object_or_404(RespostaDenuncia, id=id)
     return render(request, 'respostas/detalhar_resposta.html', {'resposta': resposta, 'denuncia': resposta.denuncia})
 
 
 # Editar resposta
-@cae_required
+@login_required
+@permission_required('respostas.change_respostadenuncia', raise_exception=True)
 def editar_resposta(request, id):
     resposta = get_object_or_404(RespostaDenuncia, pk=id)
     if request.method == 'POST':
@@ -56,7 +58,8 @@ def editar_resposta(request, id):
 
 
 # Deletar resposta
-@cae_required
+@login_required
+@permission_required('respostas.delete_respostadenuncia', raise_exception=True)
 def deletar_resposta(request, id):
     resposta = get_object_or_404(RespostaDenuncia, pk=id)
     protocolo = resposta.denuncia.protocolo

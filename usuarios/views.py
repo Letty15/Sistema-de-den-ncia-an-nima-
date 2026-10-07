@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from administracao.decorators import cae_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Usuario
 from .forms import CadastroUsuarioForm, EditarUsuarioForm
 
@@ -42,17 +42,20 @@ def logout_view(request):
     messages.info(request, 'Você saiu da sua conta.')
     return redirect('login')
 
-@cae_required
+@login_required
+@permission_required('usuarios.view_usuario', raise_exception=True)
 def listar_usuario(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/listar.html', {'usuarios': usuarios})
 
-@cae_required
+@login_required
+@permission_required('usuarios.view_usuario', raise_exception=True)
 def detalhar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     return render(request, 'usuarios/detalhar_usuario.html', {'usuario': usuario})
 
-@cae_required
+@login_required
+@permission_required('usuarios.change_usuario', raise_exception=True)
 def editar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
@@ -64,7 +67,8 @@ def editar_usuario(request, pk):
         form = EditarUsuarioForm(instance=usuario)
     return render(request, 'usuarios/editar_usuario.html', {'form': form, 'usuario': usuario})
 
-@cae_required
+@login_required
+@permission_required('usuarios.delete_usuario', raise_exception=True)
 def deletar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
