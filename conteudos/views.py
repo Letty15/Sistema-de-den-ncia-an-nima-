@@ -1,3 +1,4 @@
+from administracao.decorators import cae_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ConteudoEducativo, CanalApoio
 from .forms import ConteudoEducativoForm, CanalApoioForm
@@ -7,7 +8,7 @@ def listar_conteudo(request):
     conteudos = ConteudoEducativo.objects.all()
     return render(request, 'conteudos/listar.html', {'conteudos': conteudos})
 
-
+@cae_required
 def novo_conteudo(request):
     if request.method == 'POST':
         form = ConteudoEducativoForm(request.POST)
@@ -23,7 +24,7 @@ def detalhar_conteudo(request, pk):
     conteudo = get_object_or_404(ConteudoEducativo, pk=pk)
     return render(request, 'conteudos/detalhar_conteudo.html', {'conteudo': conteudo})
 
-
+@cae_required
 def editar_conteudo(request, pk):
     conteudo = get_object_or_404(ConteudoEducativo, pk=pk)
     if request.method == 'POST':
@@ -35,7 +36,7 @@ def editar_conteudo(request, pk):
         form = ConteudoEducativoForm(instance=conteudo)
     return render(request, 'conteudos/editar_conteudo.html', {'form': form, 'conteudo': conteudo})
 
-
+@cae_required
 def deletar_conteudo(request, pk):
     conteudo = get_object_or_404(ConteudoEducativo, pk=pk)
     if request.method == 'POST':
@@ -48,7 +49,7 @@ def listar_canal(request):
     canais = CanalApoio.objects.all()
     return render(request, 'conteudos/listar_canal.html', {'canais': canais})
 
-
+@cae_required
 def novo_canal(request):
     if request.method == 'POST':
         form = CanalApoioForm(request.POST)
@@ -59,12 +60,11 @@ def novo_canal(request):
         form = CanalApoioForm()
     return render(request, 'conteudos/novo_canal.html', {'form': form})
 
-
 def detalhar_canal(request, pk):
     canal = get_object_or_404(CanalApoio, pk=pk)
     return render(request, 'conteudos/detalhar_canal.html', {'canal': canal})
 
-
+@cae_required
 def editar_canal(request, pk):
     canal = get_object_or_404(CanalApoio, pk=pk)
     if request.method == 'POST':
@@ -76,7 +76,7 @@ def editar_canal(request, pk):
         form = CanalApoioForm(instance=canal)
     return render(request, 'conteudos/editar_canal.html', {'form': form, 'canal': canal})
 
-
+@cae_required
 def deletar_canal(request, pk):
     canal = get_object_or_404(CanalApoio, pk=pk)
     if request.method == 'POST':
