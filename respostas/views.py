@@ -7,6 +7,7 @@ from .forms import RespostaForm
 
 # Listar respostas
 @login_required
+@permission_required('respostas.view_respostadenuncia', raise_exception=True)
 def listar_respostas(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
     respostas = denuncia.respostas.all()

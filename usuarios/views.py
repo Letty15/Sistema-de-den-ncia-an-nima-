@@ -36,7 +36,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'usuarios/login.html', {'form': form})
 
-
+@login_required
 def logout_view(request):
     logout(request)
     messages.info(request, 'Você saiu da sua conta.')
