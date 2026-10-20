@@ -5,6 +5,7 @@ from django.contrib import messages
 from usuarios.models import Usuario
 from .models import Denuncia
 from .forms import DenunciaForm
+from .regras import eh_dona, pode_ver_denuncia
 
 
 @login_required
@@ -16,7 +17,6 @@ def listar_denuncia(request):
 
 
 @login_required
-@permission_required('denuncias.view_denuncia', raise_exception=True)
 def minhas_denuncias(request):
     """Qualquer usuária logada vê só as denúncias que ela mesma registrou."""
     denuncias = Denuncia.objects.filter(denunciante_id=request.user.id)
@@ -45,9 +45,10 @@ def nova_denuncia(request):
     return render(request, 'denuncias/form_denuncia.html', {'form': form})
 
 @login_required
-@permission_required('denuncias.view_denuncia', raise_exception=True)
 def detalhar_denuncia(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+    if not pode_ver_denuncia(request.user, denuncia):
+        raise PermissionDenied
     return render(request, 'denuncias/detalhar_denuncia.html', {'denuncia': denuncia})
 
 
@@ -55,6 +56,8 @@ def detalhar_denuncia(request, protocolo):
 @permission_required('denuncias.change_denuncia', raise_exception=True)
 def editar_denuncia(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+    if not eh_dona(request.user, denuncia):
+        raise PermissionDenied
 
     if request.method == 'POST':
         form = DenunciaForm(request.POST, instance=denuncia)
@@ -70,6 +73,8 @@ def editar_denuncia(request, protocolo):
 @permission_required('denuncias.delete_denuncia', raise_exception=True)
 def deletar_denuncia(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+    if not eh_dona(request.user, denuncia):
+        raise PermissionDenied
 
     if request.method == 'POST':
         denuncia.delete()
