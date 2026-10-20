@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -10,10 +11,12 @@ from .forms import CadastroUsuarioForm, EditarUsuarioForm
 def cadastrar_usuario(request):
     if request.method == 'POST':
         form = CadastroUsuarioForm(request.POST)
-        if form.is_valid():
-            usuario = form.save()
+                   usuario = form.save()
+            grupo, _ = Group.objects.get_or_create(name='Denunciante')
+            usuario.groups.add(grupo)
             login(request, usuario)
-            return redirect('listar_usuario')
+            messages.success(request, 'Cadastro realizado com sucesso!')
+            return redirect('minhas_denuncias')
     else:
         form = CadastroUsuarioForm()
     return render(request, 'usuarios/cadastrar_usuario.html', {'form': form})
