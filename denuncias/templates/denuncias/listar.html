@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Denúncias</title>
+{% extends 'base.html' %}
+
+{% block titulo %}Lista de Denúncias{% endblock %}
+
+{% block estilo %}
     <style>
         table td, table th {
             border-bottom: 1px solid #c0bebe;
@@ -87,11 +87,11 @@
             background: #b995d4;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block conteudo %}
     <h1>Denúncias Registradas</h1>
 
-     <a href="{% url 'nova_denuncia' %}" class="Criar">+Adicionar</a>
     <table cellpadding="8" cellspacing="0">
         <thead>
             <tr>
@@ -131,12 +131,7 @@
                 <td>{{ denuncia.denunciante.username }}</td>
                  <td class="Detalhes">
                     <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}" class="btn">Detalhes</a>
-                </td>
-                <td class="Deletar">
-                    <a href="{% url 'deletar_denuncia' protocolo=denuncia.protocolo %}" class="btn">Deletar</a>
-                </td>
-                <td class="Editar">
-                    <a href="{% url 'editar_denuncia' protocolo=denuncia.protocolo %}" class="btn">Editar</a>
+                    <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="btn">Respostas</a>
                 </td>
             </tr>
             {% empty %}
@@ -146,5 +141,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

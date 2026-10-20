@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Excluir Canal</title>
+{% extends 'base.html' %}
 
+{% block titulo %}Excluir Canal{% endblock %}
+
+{% block estilo %}
     <style>
         body {
             color: #000000;
@@ -61,9 +60,9 @@
             background: #b995d4;
         }
     </style>
-</head>
-<body>
+{% endblock %}
 
+{% block conteudo %}
     <h1>Excluir "{{ canal.nome }}"?</h1>
 
     <p class="mensagem">
@@ -83,6 +82,4 @@
     </form>
 
     <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
-
-</body>
-</html>
+{% endblock %}

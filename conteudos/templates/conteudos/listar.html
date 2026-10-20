@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Conteúdos Educativos</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block titulo %}Conteúdos Educativos{% endblock %}
+
+{% block conteudo %}
     <h1>Conteúdos Publicados</h1>
 
     <table cellpadding="8" cellspacing="0" border="1">
@@ -23,9 +21,13 @@
                 <td>{{ conteudo.get_categoria_display }}</td>
                 <td>{{ conteudo.publicado_em }}</td>
                 <td>
-                    <a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}">Ver</a> |
-                    <a href="{% url 'editar_conteudo' pk=conteudo.pk %}">Editar</a> |
-                    <a href="{% url 'deletar_conteudo' pk=conteudo.pk %}">Excluir</a>
+                    <a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}">Ver</a>
+                    {% if perms.conteudos.change_conteudoeducativo %}
+                        | <a href="{% url 'editar_conteudo' pk=conteudo.pk %}">Editar</a>
+                    {% endif %}
+                    {% if perms.conteudos.delete_conteudoeducativo %}
+                        | <a href="{% url 'deletar_conteudo' pk=conteudo.pk %}">Excluir</a>
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}
@@ -36,6 +38,7 @@
         </tbody>
     </table>
 
+    {% if perms.conteudos.add_conteudoeducativo %}
     <p><a href="{% url 'novo_conteudo' %}">Publicar novo conteúdo</a></p>
-</body>
-</html>
+    {% endif %}
+{% endblock %}

@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Usuário</title>
+{% extends 'base.html' %}
+
+{% block titulo %}Cadastro de Usuário{% endblock %}
+
+{% block estilo %}
     <style>
         h1 { color: #f56a93; }
         body { font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; }
@@ -12,13 +12,13 @@
         input { width: 100%; padding: 6px; border: 1px solid #c0bebe; border-radius: 4px; }
         button { background: #f56a93; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block conteudo %}
     <h1>Criar Conta</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Cadastrar</button>
     </form>
-</body>
-</html>
+{% endblock %}

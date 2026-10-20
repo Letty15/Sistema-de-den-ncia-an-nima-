@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Novo Conteúdo</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block titulo %}Novo Conteúdo{% endblock %}
+
+{% block conteudo %}
     <h1>Publicar Conteúdo Educativo</h1>
 
     <form method="post">
@@ -14,5 +12,4 @@
     </form>
 
     <p><a href="{% url 'listar_conteudo' %}">Ver conteúdos publicados</a></p>
-</body>
-</html>
+{% endblock %}

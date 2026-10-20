@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Usuários</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block titulo %}Usuários{% endblock %}
+
+{% block conteudo %}
     <h1>Usuários Cadastrados</h1>
     <table cellpadding="8" cellspacing="0" border="1">
         <thead>
@@ -27,5 +25,4 @@
         </tbody>
     </table>
     <p><a href="{% url 'cadastrar_usuario' %}">Cadastrar novo usuário</a></p>
-</body>
-</html>
+{% endblock %}

@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ canal.nome }}</title>
+{% extends 'base.html' %}
 
+{% block titulo %}{{ canal.nome }}{% endblock %}
+
+{% block estilo %}
     <style>
         .btn{
             display: inline-block;
@@ -41,9 +40,9 @@
             text-align: left;
         }
     </style>
-</head>
-<body>
+{% endblock %}
 
+{% block conteudo %}
     <h1>{{ canal.nome }}</h1>
     <table cellpadding="8" cellspacing="0">
         <thead>
@@ -61,6 +60,4 @@
     </table>
 
     <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
-</body>
-</html>
-
+{% endblock %}

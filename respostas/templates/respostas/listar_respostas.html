@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Respostas</title>
+{% extends 'base.html' %}
+
+{% block titulo %}Lista de Respostas{% endblock %}
+
+{% block estilo %}
     <style>
         .Criar{
             display: inline-block;
@@ -77,11 +77,14 @@
             text-align: left;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block conteudo %}
     <h1>Respostas relacionadas</h1>
 
+    {% if perms.respostas.add_respostadenuncia %}
     <a href="{% url 'nova_resposta' protocolo=denuncia.protocolo %}" class="Criar">+Adicionar</a>
+    {% endif %}
     <table cellpadding="8" cellspacing="0">
         <thead>
             <tr>
@@ -101,19 +104,22 @@
                 <td class="Detalhes">
                     <a href="{% url 'detalhar_resposta' id=resposta.id %}" class="btn">Detalhes</a>
                 </td>
+                {% if perms.respostas.delete_respostadenuncia %}
                 <td class="Deletar">
                     <a href="{% url 'deletar_resposta' id=resposta.id %}" class="btn">Deletar</a>
                 </td>
+                {% endif %}
+                {% if perms.respostas.change_respostadenuncia %}
                 <td class="Editar">
                     <a href="{% url 'editar_resposta' id=resposta.id %}" class="btn">Editar</a>
                 </td>
+                {% endif %}
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">Nenhuma resposta relacionada.</td>
+                <td colspan="7">Nenhuma resposta relacionada.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

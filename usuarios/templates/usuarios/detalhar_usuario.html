@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ usuario.username }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block titulo %}{{ usuario.username }}{% endblock %}
+
+{% block conteudo %}
     <h1>{{ usuario.username }}</h1>
     <p><strong>Email:</strong> {{ usuario.email }}</p>
     <p><strong>CPF:</strong> {{ usuario.cpf }}</p>
@@ -15,5 +13,4 @@
         <a href="{% url 'deletar_usuario' pk=usuario.pk %}">Excluir</a> |
         <a href="{% url 'listar_usuario' %}">Voltar à lista</a>
     </p>
-</body>
-</html>
+{% endblock %}

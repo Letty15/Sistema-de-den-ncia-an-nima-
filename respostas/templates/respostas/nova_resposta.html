@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Nova Denúncia</title>
+{% extends 'base.html' %}
+
+{% block titulo %}Nova Resposta{% endblock %}
+
+{% block estilo %}
     <style>
         h1 {
             color: #f56a93;
@@ -49,7 +49,7 @@
             color: #d33;
             font-size: 13px;
         }
-        .btn{
+        .btn {
             margin-top: 10px;
             display: inline-block;
             padding: 8px 16px;
@@ -58,14 +58,15 @@
             text-decoration: none;
             border-radius: 4px;
             cursor: pointer;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
         .btn:hover {
             background: #b995d4;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block conteudo %}
     <h1>Registrar Resposta</h1>
 
     <form method="post">
@@ -75,5 +76,4 @@
     </form>
 
     <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="btn">Voltar</a>
-</body>
-</html>
+{% endblock %}

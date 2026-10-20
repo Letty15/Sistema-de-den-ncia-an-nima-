@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalhes da resposta:</title>
+{% extends 'base.html' %}
+
+{% block titulo %}Detalhes da resposta{% endblock %}
+
+{% block estilo %}
     <style>
         .btn{
             display: inline-block;
@@ -40,8 +40,9 @@
             text-align: left;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block conteudo %}
     <h1>Resposta:</h1>
 
     <table cellpadding="8" cellspacing="0">
@@ -58,9 +59,9 @@
                 <td>{{ resposta.denuncia.protocolo }}</td>
                 <td>{{ resposta.autor.username }}</td>
                 <td>{{ resposta.mensagem }}</td>
-                <td>{{ resposta.data }}</td>  
+                <td>{{ resposta.data }}</td>
+            </tr>
         </tbody>
     </table>
     <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="btn">Voltar</a>
-</body>
-</html>
+{% endblock %}

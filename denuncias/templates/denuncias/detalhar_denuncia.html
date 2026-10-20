@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Denúncia {{ denuncia.protocolo }}</title>
+{% extends 'base.html' %}
+
+{% block titulo %}Denúncia {{ denuncia.protocolo }}{% endblock %}
+
+{% block estilo %}
     <style>
         h1 {
              color: #f56a93;
@@ -32,8 +32,9 @@
             background: #b995d4;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block conteudo %}
     <h1>Denúncia {{ denuncia.protocolo }}</h1>
     <p><strong>Status:</strong> {{ denuncia.get_status_display }}</p>
     <p><strong>Tipo de violência:</strong> {{ denuncia.tipo_violencia.nome }}</p>
@@ -49,7 +50,11 @@
     </p>
 
     <p>
-        <a href="{% url 'listar_denuncia' %}">Voltar à lista</a>
+        <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}">Ver respostas</a>
+        {% if perms.denuncias.view_denuncia %}
+            <a href="{% url 'listar_denuncia' %}">Voltar à lista</a>
+        {% else %}
+            <a href="{% url 'minhas_denuncias' %}">Voltar à lista</a>
+        {% endif %}
     </p>
-</body>
-</html>
+{% endblock %}

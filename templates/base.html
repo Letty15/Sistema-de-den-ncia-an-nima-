@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Voz Segura{% endblock %}</title>
+    <style>
+        body { margin: 0; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', Geneva, Verdana, sans-serif; color: #000; }
+        main { padding: 20px 30px; }
+        nav.topo { background: #f56a93; padding: 10px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+        nav.topo a { display: inline-block; margin: 0; padding: 6px 12px; background: none; color: #fff; text-decoration: none; border-radius: 4px; }
+        nav.topo a:hover { background: rgba(255, 255, 255, 0.25); }
+        nav.topo .marca { font-weight: bold; font-size: 18px; margin-right: 12px; }
+        nav.topo .ola { color: #fff; margin-left: auto; padding: 6px 8px; font-size: 14px; }
+        ul.mensagens { list-style: none; margin: 0 0 16px 0; padding: 0; }
+        ul.mensagens li { padding: 10px 14px; border-radius: 4px; margin-bottom: 6px; background: #eee; }
+        ul.mensagens li.success { background: #dff3e4; color: #1d6b34; }
+        ul.mensagens li.error { background: #fbe0e0; color: #a12626; }
+        ul.mensagens li.info { background: #e1ecfa; color: #1f4f8a; }
+    </style>
+    {% block estilo %}{% endblock %}
+</head>
+<body>
+    <nav class="topo">
+        <span class="marca">Voz Segura</span>
+        <a href="{% url 'listar_conteudo' %}">Conteúdos</a>
+        <a href="{% url 'listar_canal' %}">Canais de apoio</a>
+        {% if user.is_authenticated %}
+            {% if perms.denuncias.add_denuncia %}
+                <a href="{% url 'minhas_denuncias' %}">Minhas denúncias</a>
+                <a href="{% url 'nova_denuncia' %}">Nova denúncia</a>
+            {% endif %}
+            {% if perms.denuncias.view_denuncia %}
+                <a href="{% url 'listar_denuncia' %}">Todas as denúncias</a>
+            {% endif %}
+            {% if perms.usuarios.view_usuario %}
+                <a href="{% url 'listar_usuario' %}">Usuários</a>
+            {% endif %}
+            <span class="ola">Olá, {{ user.username }}</span>
+            <a href="{% url 'logout' %}">Sair</a>
+        {% else %}
+            <a href="{% url 'login' %}">Entrar</a>
+            <a href="{% url 'cadastrar_usuario' %}">Cadastrar</a>
+        {% endif %}
+    </nav>
+
+    <main>
+        {% if messages %}
+            <ul class="mensagens">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block conteudo %}{% endblock %}
+    </main>
+</body>
+</html>

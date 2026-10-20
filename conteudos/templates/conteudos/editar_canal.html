@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Canal</title>
+{% extends 'base.html' %}
 
+{% block titulo %}Editar Canal{% endblock %}
+
+{% block estilo %}
     <style>
         h1 {
             color: #f56a93;
@@ -68,9 +67,9 @@
             background: #b995d4;
         }
     </style>
-</head>
-<body>
+{% endblock %}
 
+{% block conteudo %}
     <h1>Editar {{ canal.nome }}</h1>
 
     <form method="post">
@@ -82,6 +81,4 @@
     </form>
 
     <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
-
-</body>
-</html>
+{% endblock %}

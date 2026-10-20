@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Conteúdo</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block titulo %}Editar Conteúdo{% endblock %}
+
+{% block conteudo %}
     <h1>Editar Conteúdo</h1>
 
     <form method="post">
@@ -14,5 +12,4 @@
     </form>
 
     <p><a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}">Cancelar</a></p> <!-- mudar pra listar depois -->
-</body>
-</html>
+{% endblock %}
