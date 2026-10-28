@@ -3,57 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>{% block titulo %}Voz Segura{% endblock %}</title>
+
+    <!-- Ícones -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Barras de rolagem -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css">
+
+    <!-- AdminLTE 4 -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/admin-lte@4.10.0/dist/css/adminlte.min.css">
+
     <style>
-        body { margin: 0; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', Geneva, Verdana, sans-serif; color: #000; }
-        main { padding: 20px 30px; }
-        nav.topo { background: #f56a93; padding: 10px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
-        nav.topo a { display: inline-block; margin: 0; padding: 6px 12px; background: none; color: #fff; text-decoration: none; border-radius: 4px; }
-        nav.topo a:hover { background: rgba(255, 255, 255, 0.25); }
-        nav.topo .marca { font-weight: bold; font-size: 18px; margin-right: 12px; }
-        nav.topo .ola { color: #fff; margin-left: auto; padding: 6px 8px; font-size: 14px; }
-        ul.mensagens { list-style: none; margin: 0 0 16px 0; padding: 0; }
-        ul.mensagens li { padding: 10px 14px; border-radius: 4px; margin-bottom: 6px; background: #eee; }
-        ul.mensagens li.success { background: #dff3e4; color: #1d6b34; }
-        ul.mensagens li.error { background: #fbe0e0; color: #a12626; }
-        ul.mensagens li.info { background: #e1ecfa; color: #1f4f8a; }
+        :root {
+            --vs-roxo: #692579;
+            --vs-roxo-escuro: #3D1947;
+            --vs-lilas: #EBD5F0;
+            --vs-fundo: #F7F1FA;
+        }
+
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                         'Lucida Grande', Geneva, Verdana, sans-serif;
+            color: var(--vs-roxo-escuro);
+        }
+
+        .app-sidebar {
+            background-color: var(--vs-roxo);
+        }
+
+        .app-sidebar .nav-link {
+            color: #fff;
+            border-radius: 8px;
+            margin: 3px 10px;
+        }
+
+        .app-sidebar .nav-link:hover,
+        .app-sidebar .nav-link.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .brand-link {
+            color: #fff !important;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .app-main {
+            background-color: var(--vs-fundo);
+        }
+
+        .app-content {
+            min-height: 80vh;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 3px 14px rgba(61, 25, 71, 0.06);
+        }
+
+        .btn-primary {
+            background-color: var(--vs-roxo);
+            border-color: var(--vs-roxo);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--vs-roxo-escuro);
+            border-color: var(--vs-roxo-escuro);
+        }
+
+        ul.mensagens {
+            list-style: none;
+            margin: 0 0 16px;
+            padding: 0;
+        }
+
+        ul.mensagens li {
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            background: #eee;
+        }
+
+        ul.mensagens li.success {
+            background: #dff3e4;
+            color: #1d6b34;
+        }
+
+        ul.mensagens li.error {
+            background: #fbe0e0;
+            color: #a12626;
+        }
+
+        ul.mensagens li.info {
+            background: #e1ecfa;
+            color: #1f4f8a;
+        }
     </style>
+
     {% block estilo %}{% endblock %}
 </head>
-<body>
-    <nav class="topo">
-        <span class="marca">Voz Segura</span>
-        <a href="{% url 'listar_conteudo' %}">Conteúdos</a>
-        <a href="{% url 'listar_canal' %}">Canais de apoio</a>
-        {% if user.is_authenticated %}
-            {% if perms.denuncias.add_denuncia %}
-                <a href="{% url 'minhas_denuncias' %}">Minhas denúncias</a>
-                <a href="{% url 'nova_denuncia' %}">Nova denúncia</a>
-            {% endif %}
-            {% if perms.denuncias.view_denuncia %}
-                <a href="{% url 'listar_denuncia' %}">Todas as denúncias</a>
-            {% endif %}
-            {% if perms.usuarios.view_usuario %}
-                <a href="{% url 'listar_usuario' %}">Usuários</a>
-            {% endif %}
-            <span class="ola">Olá, {{ user.username }}</span>
-            <a href="{% url 'logout' %}">Sair</a>
-        {% else %}
-            <a href="{% url 'login' %}">Entrar</a>
-            <a href="{% url 'cadastrar_usuario' %}">Cadastrar</a>
-        {% endif %}
+
+<body class="layout-fixed sidebar-expand-lg">
+<div class="app-wrapper">
+
+    <!-- Barra superior -->
+    <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-lte-toggle="sidebar"
+                       href="#"
+                       role="button"
+                       aria-label="Abrir ou fechar menu">
+                        <i class="bi bi-list"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <span class="navbar-text ms-auto">
+                {% if user.is_authenticated %}
+                    Olá, {{ user.username }}
+                {% else %}
+                    Bem-vinda ao Voz Segura
+                {% endif %}
+            </span>
+        </div>
     </nav>
 
-    <main>
-        {% if messages %}
-            <ul class="mensagens">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    <!-- Menu lateral -->
+    <aside class="app-sidebar shadow" data-bs-theme="dark">
 
-        {% block conteudo %}{% endblock %}
+        <div class="sidebar-brand">
+            <a href="{% url 'listar_conteudo' %}" class="brand-link">
+                Voz Segura
+            </a>
+        </div>
+
+        <div class="sidebar-wrapper">
+            <nav class="mt-2">
+                <ul class="nav sidebar-menu flex-column" role="menu">
+
+                    <li class="nav-item">
+                        <a href="{% url 'listar_conteudo' %}" class="nav-link">
+                            <i class="nav-icon bi bi-book"></i>
+                            <p>Conteúdos educativos</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'listar_canal' %}" class="nav-link">
+                            <i class="nav-icon bi bi-heart"></i>
+                            <p>Canais de apoio</p>
+                        </a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+
+                        {% if perms.denuncias.add_denuncia %}
+                        <li class="nav-item">
+                            <a href="{% url 'minhas_denuncias' %}" class="nav-link">
+                                <i class="nav-icon bi bi-clipboard-check"></i>
+                                <p>Minhas denúncias</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{% url 'nova_denuncia' %}" class="nav-link">
+                                <i class="nav-icon bi bi-plus-circle"></i>
+                                <p>Nova denúncia</p>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if perms.denuncias.view_denuncia %}
+                        <li class="nav-item">
+                            <a href="{% url 'listar_denuncia' %}" class="nav-link">
+                                <i class="nav-icon bi bi-shield-check"></i>
+                                <p>Todas as denúncias</p>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if perms.usuarios.view_usuario %}
+                        <li class="nav-item">
+                            <a href="{% url 'listar_usuario' %}" class="nav-link">
+                                <i class="nav-icon bi bi-people"></i>
+                                <p>Usuários</p>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a href="{% url 'logout' %}" class="nav-link">
+                                <i class="nav-icon bi bi-box-arrow-right"></i>
+                                <p>Sair</p>
+                            </a>
+                        </li>
+
+                    {% else %}
+
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}" class="nav-link">
+                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                                <p>Entrar</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{% url 'cadastrar_usuario' %}" class="nav-link">
+                                <i class="nav-icon bi bi-person-plus"></i>
+                                <p>Cadastrar</p>
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="app-main">
+        <div class="app-content">
+            <div class="container-fluid p-4">
+
+                {% if messages %}
+                    <ul class="mensagens">
+                        {% for message in messages %}
+                            <li class="{{ message.tags }}">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% block conteudo %}{% endblock %}
+
+            </div>
+        </div>
     </main>
+
+    <!-- Rodapé -->
+    <footer class="app-footer">
+        <strong>Voz Segura</strong> — Sistema de apoio e denúncia.
+    </footer>
+
+</div>
+
+<!-- Scripts do AdminLTE -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@4.10.0/dist/js/adminlte.min.js"></script>
+
+{% block scripts %}{% endblock %}
+
 </body>
 </html>
+```
