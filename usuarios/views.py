@@ -11,12 +11,12 @@ from .forms import CadastroUsuarioForm, EditarUsuarioForm
 def cadastrar_usuario(request):
     if request.method == 'POST':
         form = CadastroUsuarioForm(request.POST)
-                   usuario = form.save()
-            grupo, _ = Group.objects.get_or_create(name='Denunciante')
-            usuario.groups.add(grupo)
-            login(request, usuario)
-            messages.success(request, 'Cadastro realizado com sucesso!')
-            return redirect('minhas_denuncias')
+        usuario = form.save()
+        grupo, _ = Group.objects.get_or_create(name='Denunciante')
+        usuario.groups.add(grupo)
+        login(request, usuario)
+        messages.success(request, 'Cadastro realizado com sucesso!')
+        return redirect('minhas_denuncias')
     else:
         form = CadastroUsuarioForm()
     return render(request, 'usuarios/cadastrar_usuario.html', {'form': form})

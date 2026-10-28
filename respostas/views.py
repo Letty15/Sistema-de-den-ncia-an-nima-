@@ -14,7 +14,7 @@ from .forms import RespostaForm
 @permission_required('respostas.view_respostadenuncia', raise_exception=True)
 def listar_respostas(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
-        if not pode_ver_denuncia(request.user, denuncia):
+    if not pode_ver_denuncia(request.user, denuncia):
         raise PermissionDenied
     respostas = denuncia.respostas.all()
     return render(request, 'respostas/listar_respostas.html', {'respostas': respostas, 'denuncia': denuncia})
@@ -44,7 +44,7 @@ def nova_resposta(request, protocolo):
 @permission_required('respostas.view_respostadenuncia', raise_exception=True)
 def detalhar_resposta(request, id):
     resposta = get_object_or_404(RespostaDenuncia, id=id)
-        if not pode_ver_denuncia(request.user, resposta.denuncia):
+    if not pode_ver_denuncia(request.user, resposta.denuncia):
         raise PermissionDenied
     return render(request, 'respostas/detalhar_resposta.html', {'resposta': resposta, 'denuncia': resposta.denuncia})
 
