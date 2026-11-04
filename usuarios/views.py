@@ -11,15 +11,17 @@ from .forms import CadastroUsuarioForm, EditarUsuarioForm
 def cadastrar_usuario(request):
     if request.method == 'POST':
         form = CadastroUsuarioForm(request.POST)
-        usuario = form.save()
-        grupo, _ = Group.objects.get_or_create(name='Denunciante')
-        usuario.groups.add(grupo)
-        login(request, usuario)
-        messages.success(request, 'Cadastro realizado com sucesso!')
-        return redirect('minhas_denuncias')
+        if form.is_valid():
+            usuario = form.save()
+            grupo, _ = Group.objects.get_or_create(name='Denunciante')
+            usuario.groups.add(grupo)
+            login(request, usuario)
+            messages.success(request, 'Cadastro realizado com sucesso!')
+            return redirect('minhas_denuncias')
     else:
         form = CadastroUsuarioForm()
     return render(request, 'usuarios/cadastrar_usuario.html', {'form': form})
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -39,11 +41,13 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'usuarios/login.html', {'form': form})
 
+
 @login_required
 def logout_view(request):
     logout(request)
     messages.info(request, 'Você saiu da sua conta.')
     return redirect('login')
+
 
 @login_required
 @permission_required('usuarios.view_usuario', raise_exception=True)
@@ -51,11 +55,13 @@ def listar_usuario(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/listar.html', {'usuarios': usuarios})
 
+
 @login_required
 @permission_required('usuarios.view_usuario', raise_exception=True)
 def detalhar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     return render(request, 'usuarios/detalhar_usuario.html', {'usuario': usuario})
+
 
 @login_required
 @permission_required('usuarios.change_usuario', raise_exception=True)
@@ -69,6 +75,7 @@ def editar_usuario(request, pk):
     else:
         form = EditarUsuarioForm(instance=usuario)
     return render(request, 'usuarios/editar_usuario.html', {'form': form, 'usuario': usuario})
+
 
 @login_required
 @permission_required('usuarios.delete_usuario', raise_exception=True)
