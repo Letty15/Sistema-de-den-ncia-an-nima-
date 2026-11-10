@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Usuario
 from .forms import CadastroUsuarioForm, EditarUsuarioForm
+from django.views.decorators.http import require_POST
 
 
 def cadastrar_usuario(request):
@@ -43,6 +44,7 @@ def login_view(request):
     return render(request, 'usuarios/login.html', {'form': form})
 
 
+@require_POST
 @login_required
 def logout_view(request):
     logout(request)
