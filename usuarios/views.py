@@ -28,6 +28,7 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
+            # Faz login
             login(request, user)
 
             next_url = request.POST.get('next') or request.GET.get('next')
