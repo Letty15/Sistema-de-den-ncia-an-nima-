@@ -135,4 +135,6 @@ Este projeto é de uso educacional. Todos os direitos reservados às autoras.
 - Eloany R. Carvalho - [@eloany15](https://github.com/eloany15)
 - Lara M. Rodrigues - [@lararg0910](https://github.com/lararg0910)
 - Letícia B. Silva - [@Letty15](https://github.com/Letty15)
-- Profª. Jamile da Silva Ramos (orientadora) - [@jamile-ramos](https://github.com/jamile-ramos)
+- Profª. Sara Monicky (orientadora) - [@](https://github.com/)
+- Profª. Jamile da Silva Ramos - [@jamile-ramos](https://github.com/jamile-ramos)
+- Prof. Dr. Carlos Anderson - [@](https://github.com/)
