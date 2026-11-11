@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from usuarios.models import Usuario
 from .models import Denuncia
-from .forms import DenunciaForm, StatusDenunciaForm
+from .forms import DenunciaForm
 from .regras import eh_dona, pode_ver_denuncia
 
 
@@ -49,14 +49,8 @@ def detalhar_denuncia(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
     if not pode_ver_denuncia(request.user, denuncia):
         raise PermissionDenied
-    return render(
-        request,
-        'denuncias/detalhar_denuncia.html',
-        {
-            'denuncia': denuncia,
-            'eh_cae': request.user.groups.filter(name='CAE').exists()
-        }
-    )
+    return render(request, 'denuncias/detalhar_denuncia.html', {'denuncia': denuncia})
+
 
 @login_required
 @permission_required('denuncias.change_denuncia', raise_exception=True)
@@ -86,28 +80,3 @@ def deletar_denuncia(request, protocolo):
         denuncia.delete()
         return redirect('minhas_denuncias')
     return render(request, 'denuncias/deletar_denuncia.html', {'denuncia': denuncia})
-
-@login_required
-@permission_required('denuncias.change_denuncia', raise_exception=True)
-def alterar_status_denuncia(request, protocolo):
-    if not request.user.groups.filter(name='CAE').exists():
-        raise PermissionDenied
-
-    denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
-
-    if request.method == 'POST':
-        form = StatusDenunciaForm(request.POST, instance=denuncia)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Status da denúncia atualizado com sucesso!')
-            return redirect('detalhar_denuncia', protocolo=denuncia.protocolo)
-
-    else:
-        form = StatusDenunciaForm(instance=denuncia)
-
-    return render(
-        request,
-        'denuncias/alterar_status.html',
-        {'form': form, 'denuncia': denuncia}
-    )

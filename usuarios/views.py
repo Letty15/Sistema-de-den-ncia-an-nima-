@@ -44,14 +44,12 @@ def login_view(request):
     return render(request, 'usuarios/login.html', {'form': form})
 
 
+@require_POST
 @login_required
 def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        messages.info(request, 'Você saiu da sua conta.')
-        return redirect('login')
-
-    return redirect('minhas_denuncias')
+    logout(request)
+    messages.info(request, 'Você saiu da sua conta.')
+    return redirect('login')
 
 
 @login_required
