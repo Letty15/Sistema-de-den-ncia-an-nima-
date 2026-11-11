@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% block titulo %}Voz Segura{% endblock %}</title>
+    <title>{% block titulo %}Denúncia Sigilosa{% endblock %}</title>
 
     <!-- Ícones -->
     <link rel="stylesheet"
@@ -140,7 +140,7 @@
                 {% if user.is_authenticated %}
                     Olá, {{ user.username }}
                 {% else %}
-                    Bem-vinda ao Voz Segura
+                    Bem-vinda ao Denúncia Sigilosa!
                 {% endif %}
             </span>
         </div>
@@ -151,7 +151,7 @@
 
         <div class="sidebar-brand">
             <a href="{% url 'listar_conteudo' %}" class="brand-link">
-                Voz Segura
+                Denúncia Sigilosa
             </a>
         </div>
 
@@ -262,7 +262,7 @@
 
     <!-- Rodapé -->
     <footer class="app-footer">
-        <strong>Voz Segura</strong> — Sistema de apoio e denúncia.
+        <strong>Denúncia Sigilosa</strong> — Sistema de apoio e denúncia.
     </footer>
 
 </div>

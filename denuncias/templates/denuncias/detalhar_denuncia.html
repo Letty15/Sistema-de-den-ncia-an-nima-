@@ -29,7 +29,7 @@
             font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
         }
         a:hover {
-            background: #b995d4;
+            background: #8152b5;
         }
     </style>
 {% endblock %}
@@ -37,6 +37,15 @@
 {% block conteudo %}
     <h1>Denúncia {{ denuncia.protocolo }}</h1>
     <p><strong>Status:</strong> {{ denuncia.get_status_display }}</p>
+
+    {% if eh_cae %}
+    <p>
+        <a href="{% url 'alterar_status_denuncia' protocolo=denuncia.protocolo %}">
+            Alterar status
+        </a>
+    </p>
+{% endif %}
+
     <p><strong>Tipo de violência:</strong> {{ denuncia.tipo_violencia.nome }}</p>
     <p><strong>Data de registro:</strong> {{ denuncia.data_registro }}</p>
     <p><strong>Denunciante:</strong> {{ denuncia.denunciante.username }}</p>

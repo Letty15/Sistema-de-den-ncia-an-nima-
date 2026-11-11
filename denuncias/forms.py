@@ -6,3 +6,11 @@ class DenunciaForm(forms.ModelForm):
     class Meta:
         model = Denuncia
         fields = ['tipo_violencia', 'descricao']
+
+class StatusDenunciaForm(forms.ModelForm):
+    class Meta:
+        model = Denuncia
+        fields = ['status']
+        labels = {
+            'status': 'Atualizar status da denúncia'
+        }
