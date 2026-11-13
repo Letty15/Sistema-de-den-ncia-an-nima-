@@ -2,84 +2,40 @@
 
 {% block titulo %}{% if denuncia %}Editar Denúncia{% else %}Nova Denúncia{% endif %}{% endblock %}
 
-{% block estilo %}
-    <style>
-        h1 {
-            color: #8152b5;
-        }
-        body {
-            color: #000000;
-        }
-        form {
-            width: 400px;
-            margin-top: 20px;
-        }
-        form p {
-            margin-bottom: 14px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        label {
-            display: block;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 6px;
-            border: 1px solid #c0bebe;
-            border-radius: 4px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        textarea {
-            min-height: 100px;
-        }
-        button {
-            background: #f56a93;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        button:hover {
-            opacity: 0.9;
-        }
-        .erro {
-            color: #d33;
-            font-size: 13px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        a{
-            margin-top: 5px;
-            display: inline-block;
-            padding: 8px 16px;
-            background: #8152b5;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
-        }
-        a:hover {
-            background: #b995d4;
-        }
-    </style>
-{% endblock %}
-
 {% block conteudo %}
-    <h1>{% if denuncia %}Editar Denúncia {{ denuncia.protocolo }}{% else %}Registrar Denúncia{% endif %}</h1>
+    <h1 class="vs-title">{% if denuncia %}Editar Denúncia{% else %}Registrar Denúncia{% endif %}</h1>
+    <p class="vs-sub mb-4">
+        {% if denuncia %}Protocolo #{{ denuncia.protocolo }}.{% else %}Preencha os campos abaixo. Seus dados serão tratados com sigilo.{% endif %}
+    </p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{% if denuncia %}Salvar alterações{% else %}Enviar Denúncia{% endif %}</button>
-    </form>
+    <div class="vs-card vs-form-card">
+        <form method="post" novalidate>
+            {% csrf_token %}
 
-    {% if denuncia %}
-        <p><a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Cancelar</a></p>
-    {% else %}
-        <p><a href="{% url 'minhas_denuncias' %}">Ver denúncias registradas</a></p>
-    {% endif %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}<div class="vs-help">{{ field.help_text|safe }}</div>{% endif %}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-100 mt-2">
+                {% if denuncia %}Salvar alterações{% else %}Enviar Denúncia{% endif %}
+            </button>
+        </form>
+
+        <p class="text-center mt-3 mb-0">
+            {% if denuncia %}
+                <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Cancelar</a>
+            {% else %}
+                <a href="{% url 'minhas_denuncias' %}">Ver minhas denúncias</a>
+            {% endif %}
+        </p>
+    </div>
 {% endblock %}
