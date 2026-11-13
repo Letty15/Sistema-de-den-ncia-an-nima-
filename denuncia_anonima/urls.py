@@ -1,20 +1,11 @@
-
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
+from .views import inicio
 
 urlpatterns = [
-    path(
-        '',
-        RedirectView.as_view(
-            pattern_name='listar_conteudo',
-            permanent=False
-        ),
-        name='inicio'
-    ),
-
+    path('', inicio, name='inicio'),
     path('admin/', admin.site.urls),
     path('denuncias/', include('denuncias.urls')),
     path('respostas/', include('respostas.urls')),

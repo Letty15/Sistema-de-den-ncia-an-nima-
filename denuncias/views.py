@@ -38,8 +38,9 @@ def nova_denuncia(request):
             denuncia = form.save(commit=False)
             denuncia.denunciante = denunciante
             denuncia.save()
-            messages.success(request, f'Denúncia registrada! Protocolo: {denuncia.protocolo}')
-            return redirect('detalhar_denuncia', protocolo=denuncia.protocolo)
+
+            return redirect('denuncia_enviada', protocolo=denuncia.protocolo)
+        
     else:
         form = DenunciaForm()
     return render(request, 'denuncias/form_denuncia.html', {'form': form})
@@ -80,3 +81,10 @@ def deletar_denuncia(request, protocolo):
         denuncia.delete()
         return redirect('minhas_denuncias')
     return render(request, 'denuncias/deletar_denuncia.html', {'denuncia': denuncia})
+
+@login_required
+def denuncia_enviada(request, protocolo):
+    denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+    if not eh_dona(request.user, denuncia):
+        raise PermissionDenied
+    return render(request, 'denuncias/denuncia_enviada.html', {'denuncia': denuncia})

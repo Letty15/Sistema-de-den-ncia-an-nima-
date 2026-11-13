@@ -1,26 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'base_auth.html' %}
 
 {% block titulo %}Entrar{% endblock %}
 
-{% block estilo %}
-    <style>
-        h1 { color: rgb(105, 37, 121); }
-        body { font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; }
-        form { width: 400px; margin-top: 20px; }
-        form p { margin-bottom: 14px; }
-        label { display: block; margin-bottom: 4px; font-weight: bold; }
-        input { width: 100%; padding: 6px; border: 1px solid #c0bebe; border-radius: 4px; }
-        button { background:rgb(235, 213, 240); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
-        .errorlist { color: #d33; font-size: 13px; }
-    </style>
-{% endblock %}
-
 {% block conteudo %}
-    <h1>Entrar</h1>
-    <form method="post">
+    <h1 class="vs-title">Bem-vinda!</h1>
+    <p class="vs-sub mb-4">Acesse sua conta para continuar.</p>
+
+    <form method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Entrar</button>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label for="{{ form.username.id_for_label }}">Usuário</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.password.id_for_label }}">Senha</label>
+            <div class="vs-senha">
+                {{ form.password }}
+                <button type="button" class="vs-olho" data-toggle-senha aria-label="Mostrar ou ocultar senha">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+            {{ form.password.errors }}
+        </div>
+
+        <button type="submit" class="w-100">Entrar</button>
     </form>
-    <p><a href="{% url 'cadastrar_usuario' %}">Ainda não tem conta? Cadastre-se</a></p>
+
+    <div class="vs-ou"><span>ou</span></div>
+
+    <a href="{% url 'cadastrar_usuario' %}" class="vs-btn vs-btn-outline w-100">Criar uma conta</a>
 {% endblock %}

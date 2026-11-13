@@ -1,0 +1,78 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block titulo %}Denúncia Sigilosa{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/admin-lte@4.10.0/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{% static 'css/sistema-denuncia.css' %}">
+</head>
+
+<body class="vs-auth">
+<div class="auth-wrap">
+
+    <!-- Lado esquerdo: identidade do sistema -->
+    <section class="auth-hero">
+        <i class="bi bi-flower2 auth-flor"></i>
+
+        <div class="auth-brand">
+            <i class="bi bi-gender-female"></i>
+            <div>
+                <strong>Denúncia Sigilosa</strong>
+                <small>para Mulheres no Ambiente Escolar</small>
+            </div>
+        </div>
+
+        <div>
+            <h2>Sua voz<br>importa.</h2>
+            <p>Aqui você pode denunciar com segurança, sigilo e sem julgamentos.</p>
+        </div>
+
+        <div class="auth-features">
+            <div><i class="bi bi-shield-lock"></i>Denúncia<br>sigilosa</div>
+            <div><i class="bi bi-book"></i>Conteúdos<br>educativos</div>
+            <div><i class="bi bi-heart"></i>Apoio e<br>acolhimento</div>
+        </div>
+    </section>
+
+    <!-- Lado direito: formulário -->
+    <section class="auth-form vs-page">
+        <div class="auth-box">
+
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                </div>
+            {% endfor %}
+
+            {% block conteudo %}{% endblock %}
+
+        </div>
+    </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Botão "olho" para mostrar/ocultar a senha
+    document.querySelectorAll('[data-toggle-senha]').forEach(function (botao) {
+        botao.addEventListener('click', function () {
+            var campo = botao.parentElement.querySelector('input');
+            var mostrar = campo.type === 'password';
+            campo.type = mostrar ? 'text' : 'password';
+            botao.querySelector('i').className = mostrar ? 'bi bi-eye-slash' : 'bi bi-eye';
+        });
+    });
+</script>
+</body>
+</html>
