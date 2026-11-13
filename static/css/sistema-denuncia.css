@@ -213,3 +213,5 @@ body{
 .vs-ou{display:flex;align-items:center;gap:1rem;margin:1.2rem 0;color:var(--vs-suave)}
 .vs-ou::before,.vs-ou::after{content:"";flex:1;height:1px;background:var(--vs-input)}
 @media (max-width:991.98px){.auth-wrap{grid-template-columns:1fr}.auth-hero{display:none}}
+
+.app-sidebar .nav-link p{font-size:.92rem!important;white-space:normal!important;line-height:1.2}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Início{% endblock %}
+
+{% block conteudo %}
+    <h1 class="vs-title">
+        {% if user.is_authenticated %}Olá, {{ user.first_name|default:user.username }}!{% else %}Bem-vinda!{% endif %}
+    </h1>
+    <p class="vs-sub mb-4">Você não está sozinha. Denunciar é um ato de coragem!</p>
+
+    {% if numeros %}
+    <h2 class="h5 fw-bold mb-3" style="color: var(--vs-header);">Painel do CAE</h2>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3"><div class="vs-stat"><span>Total de denúncias</span><strong>{{ numeros.total }}</strong></div></div>
+        <div class="col-6 col-lg-3"><div class="vs-stat"><span>Pendentes</span><strong>{{ numeros.pendentes }}</strong></div></div>
+        <div class="col-6 col-lg-3"><div class="vs-stat"><span>Em andamento</span><strong>{{ numeros.andamento }}</strong></div></div>
+        <div class="col-6 col-lg-3"><div class="vs-stat"><span>Concluídas</span><strong>{{ numeros.concluidas }}</strong></div></div>
+    </div>
+
+    <h2 class="h5 fw-bold mb-3" style="color: var(--vs-header);">Denúncias recentes</h2>
+    <table class="mb-4">
+        <thead>
+            <tr><th>Protocolo</th><th>Tipo</th><th>Data</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for d in recentes %}
+            <tr>
+                <td>#{{ d.protocolo }}</td>
+                <td>{{ d.tipo_violencia.nome }}</td>
+                <td>{{ d.data_registro|date:"d/m/Y" }}</td>
+                <td><span class="vs-badge s-{{ d.status }}">{{ d.get_status_display }}</span></td>
+                <td><a href="{% url 'detalhar_denuncia' protocolo=d.protocolo %}">Ver</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4">Nenhuma denúncia registrada.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <div class="row g-3 mb-4">
+        {% if perms.denuncias.add_denuncia %}
+        <div class="col-12 col-md-6">
+            <a href="{% url 'nova_denuncia' %}" class="vs-home-card">
+                <span class="vs-ico"><i class="bi bi-bell"></i></span>
+                <span><strong>Fazer uma denúncia</strong><small>Conte com a nossa escuta.</small></span>
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="col-12 col-md-6">
+            <a href="{% url 'listar_conteudo' %}" class="vs-home-card">
+                <span class="vs-ico"><i class="bi bi-book"></i></span>
+                <span><strong>Conteúdos educativos</strong><small>Conheça seus direitos.</small></span>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <a href="{% url 'listar_canal' %}" class="vs-home-card">
+                <span class="vs-ico"><i class="bi bi-telephone"></i></span>
+                <span><strong>Canais de apoio</strong><small>Saiba onde buscar ajuda.</small></span>
+            </a>
+        </div>
+
+        {% if perms.denuncias.add_denuncia %}
+        <div class="col-12 col-md-6">
+            <a href="{% url 'minhas_denuncias' %}" class="vs-home-card">
+                <span class="vs-ico"><i class="bi bi-clipboard-check"></i></span>
+                <span><strong>Meus registros</strong><small>Acompanhe suas denúncias.</small></span>
+            </a>
+        </div>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+        <div class="col-12 col-md-6">
+            <a href="{% url 'login' %}" class="vs-home-card">
+                <span class="vs-ico"><i class="bi bi-box-arrow-in-right"></i></span>
+                <span><strong>Entrar</strong><small>Acesse sua conta para denunciar.</small></span>
+            </a>
+        </div>
+        <div class="col-12 col-md-6">
+            <a href="{% url 'cadastrar_usuario' %}" class="vs-home-card">
+                <span class="vs-ico"><i class="bi bi-person-plus"></i></span>
+                <span><strong>Criar conta</strong><small>É rápido e seguro.</small></span>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="vs-banner">
+        <span>“Respeito também é educação.”</span>
+        <i class="bi bi-flower2"></i>
+    </div>
+{% endblock %}
