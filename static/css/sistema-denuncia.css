@@ -1,0 +1,215 @@
+/* ==========================================================
+   Denúncia Sigilosa — tema visual baseado nos protótipos
+   Carregado DEPOIS do AdminLTE (sobrescreve o que for preciso)
+   ========================================================== */
+:root{
+  --vs-header:#4B0B61;
+  --vs-roxo:#6A1B82;
+  --vs-roxo-hover:#4B0B61;
+  --vs-texto:#3A0F4F;
+  --vs-suave:#6F5C80;
+  --vs-menu:#F7E8FB;
+  --vs-menu-ativo:#E5CAF4;
+  --vs-borda:#E8D6F4;
+  --vs-input:#CDB6E6;
+  --vs-fundo:#FBF7FE;
+  --vs-rosa:#FBD3F3;
+  --vs-raio:16px;
+  --vs-sombra:0 4px 18px rgba(75,11,97,.07);
+}
+
+body{
+  font-family:'Plus Jakarta Sans','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  color:var(--vs-texto);
+}
+.app-main{background:var(--vs-fundo)}
+.app-content{min-height:80vh}
+.app-footer{background:#fff;color:var(--vs-suave);border-top:1px solid var(--vs-borda)}
+
+/* ---------- Barra superior ---------- */
+.app-header{background:var(--vs-header)!important;border-bottom:0!important;min-height:3.5rem}
+.app-header .nav-link,.app-header .navbar-text{color:#fff!important}
+.header-brand{display:none;align-items:center;gap:.6rem;color:#fff;text-decoration:none;margin-left:.5rem;line-height:1.15}
+.header-brand i{font-size:1.7rem}
+.header-brand strong{display:block;font-size:.95rem}
+.header-brand small{display:block;font-size:.68rem;opacity:.85}
+@media (max-width:991.98px){.header-brand{display:flex}}
+.sidebar-collapse .header-brand{display:flex}
+.vs-avatar{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--vs-header);
+  display:inline-grid;place-items:center;font-size:1.3rem}
+.app-header .dropdown-menu{border:1px solid var(--vs-borda);border-radius:12px;box-shadow:var(--vs-sombra)}
+.app-header .dropdown-item{color:var(--vs-texto);font-weight:600}
+.app-header .dropdown-item:hover{background:var(--vs-menu)}
+
+/* ---------- Menu lateral (claro, como no protótipo) ---------- */
+.app-sidebar{background:linear-gradient(180deg,var(--vs-menu),#F2E5FA)!important;border-right:1px solid var(--vs-borda)}
+.sidebar-brand{background:var(--vs-header)!important;border-bottom:0!important;height:3.5rem}
+.sidebar-brand .brand-link{display:flex;align-items:center;gap:.6rem;color:#fff!important;
+  text-decoration:none;line-height:1.15;white-space:nowrap}
+.sidebar-brand .brand-link i{font-size:1.7rem}
+.sidebar-brand .brand-link strong{display:block;font-size:.95rem}
+.sidebar-brand .brand-link small{display:block;font-size:.66rem;opacity:.85}
+.app-sidebar .nav-link{color:var(--vs-texto)!important;font-weight:600;border-radius:12px;
+  margin:2px 8px;padding:.7rem .9rem}
+.app-sidebar .nav-link:hover{background:rgba(106,27,130,.08)!important}
+.app-sidebar .nav-link.active{background:var(--vs-menu-ativo)!important;color:var(--vs-header)!important;
+  font-weight:800;box-shadow:none!important}
+.app-sidebar .nav-icon{font-size:1.15rem}
+.app-sidebar button.nav-link{width:calc(100% - 16px);background:none;border:0;text-align:left}
+
+/* ---------- Botões ---------- */
+.btn-primary{--bs-btn-bg:var(--vs-roxo);--bs-btn-border-color:var(--vs-roxo);--bs-btn-color:#fff;
+  --bs-btn-hover-bg:var(--vs-roxo-hover);--bs-btn-hover-border-color:var(--vs-roxo-hover);
+  --bs-btn-active-bg:var(--vs-roxo-hover);--bs-btn-active-border-color:var(--vs-roxo-hover);
+  --bs-btn-focus-shadow-rgb:106,27,130;border-radius:999px;font-weight:700}
+.btn-outline-primary{--bs-btn-color:var(--vs-roxo);--bs-btn-border-color:var(--vs-roxo);
+  --bs-btn-hover-bg:var(--vs-roxo);--bs-btn-hover-border-color:var(--vs-roxo);border-radius:999px}
+.vs-btn,.vs-page button[type=submit],.vs-page input[type=submit]{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--vs-roxo);color:#fff;border:2px solid var(--vs-roxo);border-radius:999px;
+  padding:.8rem 1.6rem;font-weight:700;text-decoration:none;cursor:pointer;transition:.15s}
+.vs-btn:hover,.vs-page button[type=submit]:hover,.vs-page input[type=submit]:hover{
+  background:var(--vs-roxo-hover);border-color:var(--vs-roxo-hover);color:#fff}
+.vs-btn-outline{background:#fff!important;color:var(--vs-roxo)!important}
+.vs-btn-outline:hover{background:var(--vs-menu)!important}
+.vs-btn.w-100,.vs-page button[type=submit].w-100{display:flex}
+
+/* ---------- Títulos e cartões ---------- */
+.vs-title,.vs-page h1{font-weight:800;font-size:1.75rem;color:var(--vs-header);margin-bottom:.25rem}
+.vs-sub{color:var(--vs-suave)}
+.vs-card{background:#fff;border:1px solid var(--vs-borda);border-radius:var(--vs-raio);box-shadow:var(--vs-sombra)}
+.vs-form-card{max-width:760px;padding:2rem}
+
+/* ---------- Camada base: deixa templates antigos bonitos sem editar ---------- */
+.vs-page label{display:block;font-weight:700;color:var(--vs-header);margin-bottom:.35rem}
+.vs-page input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden]):not([type=submit]):not([type=button]),
+.vs-page select,.vs-page textarea{
+  width:100%;padding:.8rem 1rem;border:1.5px solid var(--vs-input);border-radius:12px;
+  background:#fff;color:var(--vs-texto);font:inherit}
+.vs-page input:focus,.vs-page select:focus,.vs-page textarea:focus{
+  outline:0;border-color:var(--vs-roxo);box-shadow:0 0 0 .2rem rgba(106,27,130,.15)}
+.vs-page form p{margin-bottom:1.1rem}
+.vs-page .helptext,.vs-help{display:block;color:var(--vs-suave);font-size:.82rem;margin-top:.3rem}
+.vs-page .helptext ul,.vs-help ul{padding-left:1.1rem;margin:.2rem 0 0}
+.vs-page .errorlist{list-style:none;padding:0;margin:.3rem 0 0;color:#B42318;font-size:.85rem}
+.vs-page a:not([class]){color:var(--vs-roxo)}
+.vs-page table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;
+  border:1px solid var(--vs-borda);border-radius:var(--vs-raio);overflow:hidden;box-shadow:var(--vs-sombra)}
+.vs-page th{background:var(--vs-menu);color:var(--vs-header);font-weight:700;text-align:left;padding:.85rem 1rem}
+.vs-page td{padding:.85rem 1rem;border-top:1px solid var(--vs-borda);vertical-align:middle}
+.vs-page a.btn:not([class*="btn-"]),.vs-page .Criar,.vs-page .Detalhes .btn,.vs-page .Editar .btn,.vs-page .Deletar .btn{
+  display:inline-block;background:var(--vs-roxo);color:#fff;border-radius:999px;padding:.45rem 1.1rem;
+  font-weight:700;text-decoration:none;font-size:.9rem}
+.vs-page .Deletar .btn{background:#B42318}
+.vs-page a.btn:not([class*="btn-"]):hover,.vs-page .Criar:hover{background:var(--vs-roxo-hover);color:#fff}
+
+/* ---------- Status ---------- */
+.vs-badge{display:inline-block;padding:.4rem 1rem;border-radius:999px;font-weight:700;font-size:.85rem;white-space:nowrap}
+.s-pendente{background:#FFF0C7;color:#8A5A00}
+.s-em_analise{background:#FFDDCF;color:#9A3A12}
+.s-encaminhada{background:#DCE9FF;color:#1F4F9A}
+.s-concluida{background:#C9F4D4;color:#17692F}
+
+/* ---------- Início ---------- */
+.vs-home-card{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.3rem;height:100%;
+  background:#fff;border:1px solid var(--vs-borda);border-radius:var(--vs-raio);box-shadow:var(--vs-sombra);
+  color:var(--vs-header);text-decoration:none;transition:.15s}
+.vs-home-card:hover{transform:translateY(-2px);border-color:var(--vs-input);color:var(--vs-header)}
+.vs-home-card strong{display:block;font-size:1.05rem}
+.vs-home-card small{color:var(--vs-suave)}
+.vs-ico{flex:0 0 auto;width:60px;height:60px;border-radius:50%;background:var(--vs-rosa);color:var(--vs-header);
+  display:grid;place-items:center;font-size:1.6rem}
+.vs-ico.solid{background:var(--vs-roxo);color:#fff}
+.vs-banner{display:flex;align-items:center;justify-content:center;gap:1.2rem;padding:2.2rem 1.5rem;
+  background:linear-gradient(90deg,#FBD3F3,#F6C4EE);border-radius:var(--vs-raio);
+  color:var(--vs-header);font-weight:800;font-size:1.5rem;text-align:center}
+.vs-banner i{font-size:2.4rem;opacity:.8}
+.vs-stat{padding:1.1rem 1.3rem;background:#fff;border:1px solid var(--vs-borda);border-radius:var(--vs-raio);box-shadow:var(--vs-sombra)}
+.vs-stat span{color:var(--vs-suave);font-weight:600;font-size:.9rem}
+.vs-stat strong{display:block;font-size:2rem;color:var(--vs-header)}
+
+/* ---------- Lista de denúncias (cartões) ---------- */
+.vs-item{position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;
+  padding:1.2rem 1.4rem;margin-bottom:1rem;background:#fff;border:1px solid var(--vs-borda);
+  border-radius:var(--vs-raio);box-shadow:var(--vs-sombra)}
+.vs-item:hover{border-color:var(--vs-input)}
+.vs-item-prot{display:block;font-weight:800;color:var(--vs-header)}
+.vs-item-titulo{display:block;font-size:1.15rem;font-weight:700;color:var(--vs-header);text-decoration:none}
+.vs-item-data{color:var(--vs-suave);font-size:.9rem}
+.vs-item-side{display:flex;align-items:center;gap:1rem;color:var(--vs-header);font-size:1.2rem}
+.vs-item-acoes{position:relative;z-index:2;flex-basis:100%;display:flex;gap:1.2rem;padding-top:.7rem;
+  border-top:1px solid var(--vs-borda);font-size:.9rem;font-weight:600}
+.vs-item-acoes a{color:var(--vs-roxo);text-decoration:none}
+.vs-item-acoes a.perigo{color:#B42318}
+
+/* ---------- Conteúdos ---------- */
+.vs-chips{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.2rem 0 1.6rem}
+.vs-chip{padding:.55rem 1.3rem;border-radius:999px;background:#F0DDF8;color:var(--vs-header);
+  font-weight:600;text-decoration:none}
+.vs-chip:hover{background:var(--vs-menu-ativo);color:var(--vs-header)}
+.vs-chip.active{background:var(--vs-roxo);color:#fff}
+.vs-cont{position:relative;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#fff;
+  border:1px solid var(--vs-borda);border-radius:var(--vs-raio);box-shadow:var(--vs-sombra);transition:.15s}
+.vs-cont:hover{transform:translateY(-2px)}
+.vs-cover{height:130px;display:grid;place-items:center;color:#fff;font-size:3rem}
+.cat-direitos{background:linear-gradient(135deg,#4B0B61,#9B3FB8)}
+.cat-prevencao{background:linear-gradient(135deg,#B0307F,#F08BC7)}
+.cat-impactos{background:linear-gradient(135deg,#5B2A9E,#A98BE8)}
+.vs-cont-body{padding:1.1rem 1.3rem 1.3rem;display:flex;flex-direction:column;gap:.35rem;flex:1}
+.vs-tag{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--vs-roxo)}
+.vs-cont-body h2{font-size:1.15rem;font-weight:800;color:var(--vs-header);margin:0}
+.vs-cont-body p{color:var(--vs-suave);margin:0;flex:1}
+.vs-ler{font-weight:700;color:var(--vs-header);text-decoration:none}
+.vs-icon-btn{position:relative;z-index:2;width:36px;height:36px;border-radius:10px;display:inline-grid;place-items:center;
+  background:#EFE6FB;color:var(--vs-header);text-decoration:none}
+.vs-icon-btn.perigo{background:#FDE4E4;color:#B42318}
+
+/* ---------- Canais de apoio ---------- */
+.vs-canal{display:flex;align-items:center;gap:1.2rem;padding:1.1rem 1.4rem;margin-bottom:1rem;background:#fff;
+  border:1px solid var(--vs-borda);border-radius:var(--vs-raio);box-shadow:var(--vs-sombra)}
+.vs-canal-info{flex:1}
+.vs-canal-info h2{font-size:1.15rem;font-weight:800;color:var(--vs-header);margin:0}
+.vs-canal-info p{margin:0;color:var(--vs-suave)}
+.vs-canal-acao{display:flex;align-items:center;gap:.8rem;padding-left:1.2rem;border-left:1px solid var(--vs-borda)}
+.vs-ligar{display:inline-flex;align-items:center;gap:.4rem;font-weight:800;color:var(--vs-roxo);text-decoration:none}
+.vs-emergencia{display:flex;align-items:center;justify-content:center;gap:1.4rem;padding:1.6rem;margin-top:1.5rem;
+  background:#EFD8F8;border-radius:var(--vs-raio);color:var(--vs-header);text-align:center}
+.vs-emergencia i{font-size:2.4rem}
+.vs-emergencia strong{display:block;font-size:1.8rem}
+@media (max-width:575.98px){.vs-canal{flex-wrap:wrap}.vs-canal-acao{border-left:0;padding-left:0;flex-basis:100%}}
+
+/* ---------- Sucesso ---------- */
+.vs-sucesso{max-width:640px;margin:1rem auto;padding:2.5rem 2rem;text-align:center}
+.vs-sucesso .vs-check{width:92px;height:92px;margin:0 auto 1.2rem;border-radius:50%;background:var(--vs-roxo);
+  color:#fff;display:grid;place-items:center;font-size:3rem}
+.vs-protocolo{display:inline-block;margin:1rem 0 1.5rem;padding:.7rem 1.4rem;border-radius:12px;background:var(--vs-menu);
+  font-weight:800;font-size:1.2rem;letter-spacing:.06em;color:var(--vs-header)}
+
+/* ---------- Detalhe ---------- */
+.vs-dl dt{color:var(--vs-suave);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.vs-dl dd{margin-bottom:1.1rem;color:var(--vs-texto)}
+
+/* ---------- Login / cadastro (tela dividida) ---------- */
+.vs-auth{margin:0;background:#fff}
+.auth-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+.auth-hero{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;
+  padding:2.5rem;color:#fff;
+  background:radial-gradient(circle at 70% 45%,#B0307F 0,#6A1B82 35%,#2D013E 75%)}
+.auth-brand{display:flex;align-items:center;gap:.9rem}
+.auth-brand i{font-size:3.2rem;color:#F7B6EA}
+.auth-brand strong{display:block;font-size:1.2rem}
+.auth-brand small{opacity:.85}
+.auth-hero h2{font-size:2.6rem;font-weight:800;line-height:1.1;margin:0 0 1rem}
+.auth-hero p{max-width:380px;opacity:.92}
+.auth-flor{position:absolute;right:-30px;top:18%;font-size:15rem;color:rgba(247,182,234,.18)}
+.auth-features{display:flex;gap:2rem;margin-top:2rem}
+.auth-features div{text-align:center;font-size:.85rem}
+.auth-features i{display:block;font-size:2rem;color:#F7B6EA;margin-bottom:.3rem}
+.auth-form{display:flex;align-items:center;justify-content:center;padding:2rem}
+.auth-box{width:100%;max-width:440px}
+.vs-senha{position:relative}
+.vs-senha input{padding-right:3rem!important}
+.vs-olho{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--vs-header);font-size:1.2rem}
+.vs-ou{display:flex;align-items:center;gap:1rem;margin:1.2rem 0;color:var(--vs-suave)}
+.vs-ou::before,.vs-ou::after{content:"";flex:1;height:1px;background:var(--vs-input)}
+@media (max-width:991.98px){.auth-wrap{grid-template-columns:1fr}.auth-hero{display:none}}
