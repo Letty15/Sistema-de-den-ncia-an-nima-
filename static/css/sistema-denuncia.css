@@ -215,3 +215,10 @@ body{
 @media (max-width:991.98px){.auth-wrap{grid-template-columns:1fr}.auth-hero{display:none}}
 
 .app-sidebar .nav-link p{font-size:.92rem!important;white-space:normal!important;line-height:1.2}
+/* Detalhe somente leitura (mesma organização do formulário) */
+.vs-label{display:block;font-weight:700;color:var(--vs-header);margin-bottom:.35rem}
+.vs-valor{width:100%;min-height:3rem;padding:.8rem 1rem;border:1.5px solid var(--vs-input);
+  border-radius:12px;background:#F8F2FB;color:var(--vs-texto);white-space:pre-line;overflow-wrap:anywhere}
+.vs-valor.grande{min-height:8rem}
+/* Espaço entre o botão do formulário e o botão "Voltar" */
+.vs-page form + a.btn{margin-top:1rem}

@@ -5,8 +5,17 @@ from .forms import ConteudoEducativoForm, CanalApoioForm
 
 
 def listar_conteudo(request):
+    categoria = request.GET.get('categoria', '')
     conteudos = ConteudoEducativo.objects.all()
-    return render(request, 'conteudos/listar.html', {'conteudos': conteudos})
+    if categoria in dict(ConteudoEducativo.CATEGORIA_CHOICES):
+        conteudos = conteudos.filter(categoria=categoria)
+    else:
+        categoria = ''
+    return render(request, 'conteudos/listar.html', {
+        'conteudos': conteudos.order_by('-publicado_em'),
+        'categorias': ConteudoEducativo.CATEGORIA_CHOICES,
+        'categoria_atual': categoria,
+    })
 
 @login_required
 @permission_required('conteudos.add_conteudoeducativo', raise_exception=True)

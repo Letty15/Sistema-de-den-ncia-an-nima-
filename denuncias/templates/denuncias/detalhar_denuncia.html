@@ -2,59 +2,58 @@
 
 {% block titulo %}Denúncia {{ denuncia.protocolo }}{% endblock %}
 
-{% block estilo %}
-    <style>
-        h1 {
-             color: #8152b5;
-         }
-        a { 
-            color: #8152b5;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; 
-        }
-        p {
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', Geneva, Verdana, sans-serif; color: #000; 
-        }
-        form.inline {
-            display: inline;
-        }
-        a{
-            margin-top: 5px;
-            display: inline-block;
-            padding: 8px 16px;
-            background: #8152b5;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
-        }
-        a:hover {
-            background: #b995d4;
-        }
-    </style>
-{% endblock %}
-
 {% block conteudo %}
-    <h1>Denúncia {{ denuncia.protocolo }}</h1>
-    <p><strong>Status:</strong> {{ denuncia.get_status_display }}</p>
-    <p><strong>Tipo de violência:</strong> {{ denuncia.tipo_violencia.nome }}</p>
-    <p><strong>Data de registro:</strong> {{ denuncia.data_registro }}</p>
-    <p><strong>Denunciante:</strong> {{ denuncia.denunciante.username }}</p>
-    <p><strong>Descrição:</strong><br>{{ denuncia.descricao }}</p>
+<div style="max-width: 760px;">
 
-    <p><strong>Evidências:</strong>
-        {% if denuncia.evidencias.count > 0 %}{{ denuncia.evidencias.count }} imagem(ns){% else %}Nenhuma{% endif %}
-    </p>
-    <p><strong>Respostas:</strong>
-        {% if denuncia.respostas.count > 0 %}{{ denuncia.respostas.count }} resposta(s){% else %}Nenhuma{% endif %}
-    </p>
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="vs-title">Denúncia #{{ denuncia.protocolo }}</h1>
+            <p class="vs-sub mb-0">Enviada em {{ denuncia.data_registro|date:"d/m/Y" }}</p>
+        </div>
+        <span class="vs-badge s-{{ denuncia.status }}">{{ denuncia.get_status_display }}</span>
+    </div>
 
-    <p>
-        <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}">Ver respostas</a>
-        {% if perms.denuncias.view_denuncia %}
-            <a href="{% url 'listar_denuncia' %}">Voltar à lista</a>
-        {% else %}
-            <a href="{% url 'minhas_denuncias' %}">Voltar à lista</a>
+    <div class="vs-card vs-form-card">
+
+        <div class="mb-3">
+            <span class="vs-label">Tipo de violência</span>
+            <div class="vs-valor">{{ denuncia.tipo_violencia.nome }}</div>
+        </div>
+
+        <div class="mb-3">
+            <span class="vs-label">Descrição da situação</span>
+            <div class="vs-valor grande">{{ denuncia.descricao }}</div>
+        </div>
+
+        <div class="mb-3">
+            <span class="vs-label">Evidências</span>
+            {% with total=denuncia.evidencias.count %}
+            <div class="vs-valor">{% if total > 0 %}{{ total }} imagem(ns){% else %}Nenhuma{% endif %}</div>
+            {% endwith %}
+        </div>
+
+        <div>
+            <span class="vs-label">Respostas</span>
+            {% with total=denuncia.respostas.count %}
+            <div class="vs-valor">{% if total > 0 %}{{ total }} resposta(s){% else %}Nenhuma{% endif %}</div>
+            {% endwith %}
+        </div>
+
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="vs-btn">Ver respostas</a>
+
+        {% if eh_cae %}
+            <a href="{% url 'alterar_status_denuncia' protocolo=denuncia.protocolo %}" class="vs-btn vs-btn-outline">Alterar status</a>
         {% endif %}
-    </p>
+
+        {% if perms.denuncias.view_denuncia %}
+            <a href="{% url 'listar_denuncia' %}" class="vs-btn vs-btn-outline">Voltar à lista</a>
+        {% else %}
+            <a href="{% url 'minhas_denuncias' %}" class="vs-btn vs-btn-outline">Voltar à lista</a>
+        {% endif %}
+    </div>
+
+</div>
 {% endblock %}

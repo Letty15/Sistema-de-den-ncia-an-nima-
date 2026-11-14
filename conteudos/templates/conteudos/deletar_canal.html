@@ -2,65 +2,6 @@
 
 {% block titulo %}Excluir Canal{% endblock %}
 
-{% block estilo %}
-    <style>
-        body {
-            color: #000000;
-            margin: 30px;
-        }
-
-        h1 {
-            color: #8152b5;
-        }
-
-        .mensagem {
-            margin: 20px 0;
-            font-size: 16px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                         'Lucida Grande', 'Lucida Sans Unicode',
-                         Geneva, Verdana, sans-serif;
-        }
-
-        .alerta {
-            color: #b60e0e;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-weight: bold;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                         'Lucida Grande', 'Lucida Sans Unicode',
-                         Geneva, Verdana, sans-serif;
-        }
-
-        button {
-            background-color: #8152b5;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
-        }
-
-        button:hover {
-            background-color: #e05581;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #8152b5;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
-        }
-        .btn:hover {
-            background: #b995d4;
-        }
-    </style>
-{% endblock %}
 
 {% block conteudo %}
     <h1>Excluir "{{ canal.nome }}"?</h1>

@@ -3,58 +3,59 @@
 {% block titulo %}Conteúdos Educativos{% endblock %}
 
 {% block conteudo %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3 mb-0" style="color: var(--vs-roxo);">Conteúdos Publicados</h1>
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+            <h1 class="vs-title">Conteúdos Educativos</h1>
+            <p class="vs-sub mb-0">Informação também é proteção.</p>
+        </div>
         {% if perms.conteudos.add_conteudoeducativo %}
-            <a href="{% url 'novo_conteudo' %}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Publicar novo conteúdo
-            </a>
+            <a href="{% url 'novo_conteudo' %}" class="vs-btn"><i class="bi bi-plus-lg"></i> Novo conteúdo</a>
         {% endif %}
     </div>
 
-    <div class="card">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Categoria</th>
-                            <th>Publicado em</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for conteudo in conteudos %}
-                        <tr>
-                            <td>{{ conteudo.titulo }}</td>
-                            <td>{{ conteudo.get_categoria_display }}</td>
-                            <td>{{ conteudo.publicado_em }}</td>
-                            <td>
-                                <div class="d-flex flex-wrap gap-1">
-                                    <a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}"
-                                       class="btn btn-sm btn-primary">Ver</a>
-                                    {% if perms.conteudos.change_conteudoeducativo %}
-                                        <a href="{% url 'editar_conteudo' pk=conteudo.pk %}"
-                                           class="btn btn-sm btn-outline-primary">Editar</a>
-                                    {% endif %}
-                                    {% if perms.conteudos.delete_conteudoeducativo %}
-                                        <a href="{% url 'deletar_conteudo' pk=conteudo.pk %}"
-                                           class="btn btn-sm btn-outline-danger">Excluir</a>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center text-muted py-4">
-                                Nenhum conteúdo publicado ainda.
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <div class="vs-chips">
+        <a href="{% url 'listar_conteudo' %}" class="vs-chip {% if not categoria_atual %}active{% endif %}">Todos</a>
+        {% for valor, nome in categorias %}
+            <a href="?categoria={{ valor }}" class="vs-chip {% if categoria_atual == valor %}active{% endif %}">{{ nome }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="row g-4">
+        {% for conteudo in conteudos %}
+        <div class="col-12 col-md-6">
+            <article class="vs-cont">
+                <div class="vs-cover cat-{{ conteudo.categoria }}">
+                    <i class="bi {% if conteudo.categoria == 'direitos' %}bi-shield-check{% elif conteudo.categoria == 'prevencao' %}bi-lightbulb{% else %}bi-heart-pulse{% endif %}"></i>
+                </div>
+                <div class="vs-cont-body">
+                    <span class="vs-tag">{{ conteudo.get_categoria_display }}</span>
+                    <h2>{{ conteudo.titulo }}</h2>
+                    <p>{{ conteudo.corpo|truncatechars:110 }}</p>
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}" class="vs-ler stretched-link">
+                            Ler mais <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <div class="d-flex gap-2">
+                            {% if perms.conteudos.change_conteudoeducativo %}
+                                <a href="{% url 'editar_conteudo' pk=conteudo.pk %}" class="vs-icon-btn" aria-label="Editar" title="Editar"><i class="bi bi-pencil"></i></a>
+                            {% endif %}
+                            {% if perms.conteudos.delete_conteudoeducativo %}
+                                <a href="{% url 'deletar_conteudo' pk=conteudo.pk %}" class="vs-icon-btn perigo" aria-label="Excluir" title="Excluir"><i class="bi bi-trash"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="vs-card text-center p-5">
+                <i class="bi bi-book fs-1" style="color: var(--vs-roxo);"></i>
+                <h2 class="h5 fw-bold mt-2">Nenhum conteúdo por aqui ainda</h2>
+                <p class="vs-sub mb-0">Volte em breve ou escolha outra categoria.</p>
             </div>
         </div>
+        {% endfor %}
     </div>
 {% endblock %}

@@ -1,123 +1,51 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Lista de Canais{% endblock %}
-
-{% block estilo %}
-    <style>
-        .Criar{
-            display: inline-block;
-            padding: 8px 16px;
-            margin-top: 5px;
-            background: #5dce62;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer; 
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        .Criar:hover {
-            background: #9adb83;
-        }
-        .Detalhes .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #4ba3c4;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer; 
-        }
-        .Detalhes .btn:hover {
-            background: #7ab1e0;
-        }
-        .Deletar .btn{
-            display: inline-block;
-            padding: 8px 16px;
-            background: #be4e4e;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer; 
-        }
-        .Deletar .btn:hover {
-            background: #e68f8f;
-        }
-        .Editar .btn{
-            display: inline-block;
-            padding: 8px 16px;
-            background: #8152b5;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            cursor: pointer; 
-        }
-        .Editar .btn:hover {
-            background: #b995d4;
-        }
-        /* Linhas cinzas apenas embaixo das células */
-        table td, table th {
-            border-bottom: 1px solid #c0bebe;
-        }
-        /* Remove a borda da última linha */
-        table tr:last-child td {
-            border-bottom: none;
-        }
-        h1{
-            color: #8152b5;
-        }
-        table {
-            border: none;
-            margin-top: 20px;
-            width: 80%;
-            border-collapse: collapse; /* garante que as bordas fiquem coladas */
-            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            color: #000000;
-        }
-        th {
-            text-align: left;
-        }
-    </style>
-{% endblock %}
+{% block titulo %}Canais de Apoio{% endblock %}
 
 {% block conteudo %}
-    <h1>Canais de Apoio</h1>
-    
-    {% if perms.conteudos.add_canalapoio %}
-    <a href="{% url 'novo_canal' %}" class="Criar">+Adicionar</a>
-    {% endif %}
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="vs-title">Canais de Apoio</h1>
+            <p class="vs-sub mb-0">Você não está sozinha. Procure ajuda!</p>
+        </div>
+        {% if perms.conteudos.add_canalapoio %}
+            <a href="{% url 'novo_canal' %}" class="vs-btn"><i class="bi bi-plus-lg"></i> Novo canal</a>
+        {% endif %}
+    </div>
 
-    <table cellpadding="8" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Contato</th>
-                <th>Ação</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for canal in canais %}
-            <tr>
-                <td>{{ canal.nome }}</td>
-                <td>{{ canal.contato }}</td>
-                <td class="Detalhes">
-                    <a href="{% url 'detalhar_canal' pk=canal.pk %}" class="btn">Detalhes</a>
-                </td>
-                {% if perms.conteudos.delete_canalapoio %}
-                <td class="Deletar">
-                    <a href="{% url 'deletar_canal' pk=canal.pk %}" class="btn">Deletar</a>
-                </td>
-                {% endif %}
-                {% if perms.conteudos.change_canalapoio %}
-                <td class="Editar">
-                    <a href="{% url 'editar_canal' pk=canal.pk %}" class="btn">Editar</a>
-                </td>
-                {% endif %}
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3">Nenhum canal cadastrado.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% for canal in canais %}
+    <article class="vs-canal">
+        <span class="vs-ico solid"><i class="bi bi-telephone-fill"></i></span>
+
+        <div class="vs-canal-info">
+            <h2><a href="{% url 'detalhar_canal' pk=canal.pk %}" style="color: inherit; text-decoration: none;">{{ canal.nome }}</a></h2>
+            <p>{{ canal.descricao|truncatechars:90 }}</p>
+        </div>
+
+        <div class="vs-canal-acao">
+            <a href="tel:{{ canal.contato|cut:' '|cut:'-'|cut:'('|cut:')' }}" class="vs-ligar">
+                <i class="bi bi-telephone"></i> Ligar
+            </a>
+            {% if perms.conteudos.change_canalapoio %}
+                <a href="{% url 'editar_canal' pk=canal.pk %}" class="vs-icon-btn" aria-label="Editar" title="Editar"><i class="bi bi-pencil"></i></a>
+            {% endif %}
+            {% if perms.conteudos.delete_canalapoio %}
+                <a href="{% url 'deletar_canal' pk=canal.pk %}" class="vs-icon-btn perigo" aria-label="Excluir" title="Excluir"><i class="bi bi-trash"></i></a>
+            {% endif %}
+        </div>
+    </article>
+    {% empty %}
+    <div class="vs-card text-center p-5">
+        <i class="bi bi-heart fs-1" style="color: var(--vs-roxo);"></i>
+        <h2 class="h5 fw-bold mt-2">Nenhum canal cadastrado</h2>
+    </div>
+    {% endfor %}
+
+    <div class="vs-emergencia">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <div>
+            Em caso de emergência, procure a polícia
+            <strong>Ligue 190</strong>
+        </div>
+    </div>
 {% endblock %}
