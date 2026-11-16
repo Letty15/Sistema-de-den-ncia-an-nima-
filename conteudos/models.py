@@ -1,4 +1,4 @@
-from usuarios.models import Usuario
+from django.conf import settings
 from django.db import models
 
 
@@ -22,7 +22,13 @@ class ConteudoEducativo(models.Model):
     corpo = models.TextField()
     canais_apoio = models.ManyToManyField(CanalApoio, related_name='conteudos', blank=True)
     publicado_em = models.DateTimeField(auto_now_add=True)
-    autor = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
+    # O autor é sempre um membro da CAE (conta comum do Django, não um Usuario denunciante).
+    autor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        limit_choices_to={'groups__name': 'CAE'},
+    )
 
     def __str__(self):
         return self.titulo

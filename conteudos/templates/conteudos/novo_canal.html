@@ -2,15 +2,10 @@
 
 {% block titulo %}Novo Canal de Apoio{% endblock %}
 
-
 {% block conteudo %}
-    <h1>Cadastrar Canal de Apoio</h1>
+    <h1 class="vs-title">Cadastrar Canal de Apoio</h1>
+    <p class="vs-sub mb-4">Informe o nome, o telefone ou contato e uma breve descrição do serviço.</p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar</button>
-    </form>
-
-    <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
-{% endblock %} 
+    {% url 'listar_canal' as voltar %}
+    {% include 'conteudos/_form_card.html' with rotulo='Salvar' voltar=voltar %}
+{% endblock %}

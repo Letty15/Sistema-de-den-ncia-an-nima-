@@ -1,30 +1,63 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}{{ conteudo.titulo }}{% endblock %}
 
+{% block estilo %}<link rel="stylesheet" href="{% static 'css/conteudos-usuarios.css' %}">{% endblock %}
+
 {% block conteudo %}
-    <h1>{{ conteudo.titulo }}</h1>
-    <p><strong>Categoria:</strong> {{ conteudo.get_categoria_display }}</p>
-    <p><strong>Publicado em:</strong> {{ conteudo.publicado_em }}</p>
-    <p><strong>Autor:</strong> {{ conteudo.autor.username|default:"—" }}</p>
+<div class="vs-artigo">
 
-    <p>{{ conteudo.corpo }}</p>
+    <article class="vs-card vs-artigo-card">
+        <div class="vs-cover vs-cover-grande cat-{{ conteudo.categoria }}">
+            <i class="bi {% if conteudo.categoria == 'direitos' %}bi-shield-check{% elif conteudo.categoria == 'prevencao' %}bi-lightbulb{% else %}bi-heart-pulse{% endif %}"></i>
+        </div>
 
-    <p><strong>Canais de apoio:</strong>
-        {% for canal in conteudo.canais_apoio.all %}
-            {{ canal.nome }}{% if not forloop.last %}, {% endif %}
-        {% empty %}
-            Nenhum
-        {% endfor %}
-    </p>
+        <div class="vs-artigo-corpo">
+            <span class="vs-tag">{{ conteudo.get_categoria_display }}</span>
+            <h1 class="vs-title">{{ conteudo.titulo }}</h1>
 
-    <p>
+            <p class="vs-meta">
+                <span><i class="bi bi-calendar3"></i>{{ conteudo.publicado_em|date:"d/m/Y" }}</span>
+                {% if conteudo.autor %}
+                    <span><i class="bi bi-person-badge"></i>{{ conteudo.autor.get_full_name|default:conteudo.autor.username }} · CAE</span>
+                {% endif %}
+            </p>
+
+            {# linebreaks transforma linhas em branco em parágrafos (e escapa o HTML) #}
+            <div class="vs-corpo">{{ conteudo.corpo|linebreaks }}</div>
+        </div>
+    </article>
+
+    {% with canais=conteudo.canais_apoio.all %}
+        {% if canais %}
+            <h2 class="vs-secao-titulo">Canais de apoio</h2>
+            {% for canal in canais %}
+            <article class="vs-canal">
+                <span class="vs-ico solid"><i class="bi bi-telephone-fill"></i></span>
+                <div class="vs-canal-info">
+                    <h2><a href="{% url 'detalhar_canal' pk=canal.pk %}" style="color: inherit; text-decoration: none;">{{ canal.nome }}</a></h2>
+                    <p>{{ canal.descricao|truncatechars:90 }}</p>
+                </div>
+                <div class="vs-canal-acao">
+                    <a href="tel:{{ canal.contato|cut:' '|cut:'-'|cut:'('|cut:')' }}" class="vs-ligar">
+                        <i class="bi bi-telephone"></i> {{ canal.contato }}
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{% url 'listar_conteudo' %}" class="vs-btn vs-btn-outline">Voltar à lista</a>
         {% if perms.conteudos.change_conteudoeducativo %}
-            <a href="{% url 'editar_conteudo' pk=conteudo.pk %}">Editar</a> |
+            <a href="{% url 'editar_conteudo' pk=conteudo.pk %}" class="vs-btn vs-btn-outline"><i class="bi bi-pencil"></i> Editar</a>
         {% endif %}
         {% if perms.conteudos.delete_conteudoeducativo %}
-            <a href="{% url 'deletar_conteudo' pk=conteudo.pk %}">Excluir</a> |
+            <a href="{% url 'deletar_conteudo' pk=conteudo.pk %}" class="vs-btn vs-btn-perigo"><i class="bi bi-trash"></i> Excluir</a>
         {% endif %}
-        <a href="{% url 'listar_conteudo' %}">Voltar à lista</a>
-    </p>
+    </div>
+
+</div>
 {% endblock %}

@@ -1,26 +1,23 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Excluir Canal{% endblock %}
 
+{% block estilo %}<link rel="stylesheet" href="{% static 'css/conteudos-usuarios.css' %}">{% endblock %}
 
 {% block conteudo %}
-    <h1>Excluir "{{ canal.nome }}"?</h1>
+    <div class="vs-card vs-form-card text-center">
+        <span class="vs-ico mx-auto mb-3" style="background:#FDE4E4;color:#B42318;"><i class="bi bi-trash3"></i></span>
+        <h1 class="vs-title">Excluir canal de apoio?</h1>
+        <p class="vs-sub mb-0">
+            O canal <strong>"{{ canal.nome }}"</strong> será apagado e deixará de aparecer nos conteúdos.
+            Essa ação não pode ser desfeita.
+        </p>
 
-    <p class="mensagem">
-        Tem certeza que deseja excluir este canal de apoio?
-    </p>
-
-    <p class="alerta">
-        Essa ação não pode ser desfeita.
-    </p>
-
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">
-            Confirmar exclusão
-        </button>
-
-    </form>
-
-    <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
+        <form method="post" class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+            {% csrf_token %}
+            <button type="submit" class="vs-btn vs-btn-perigo">Confirmar exclusão</button>
+            <a href="{% url 'listar_canal' %}" class="vs-btn vs-btn-outline">Cancelar</a>
+        </form>
+    </div>
 {% endblock %}

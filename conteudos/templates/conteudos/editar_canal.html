@@ -2,17 +2,10 @@
 
 {% block titulo %}Editar Canal{% endblock %}
 
-
 {% block conteudo %}
-    <h1>Editar {{ canal.nome }}</h1>
+    <h1 class="vs-title">Editar Canal de Apoio</h1>
+    <p class="vs-sub mb-4">{{ canal.nome }}</p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">
-            Salvar alterações
-        </button>
-    </form>
-
-    <a href="{% url 'listar_canal' %}" class="btn">Voltar</a>
+    {% url 'detalhar_canal' pk=canal.pk as voltar %}
+    {% include 'conteudos/_form_card.html' with rotulo='Salvar alterações' voltar=voltar %}
 {% endblock %}

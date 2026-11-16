@@ -1,28 +1,52 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Usuários{% endblock %}
 
+{% block estilo %}<link rel="stylesheet" href="{% static 'css/conteudos-usuarios.css' %}">{% endblock %}
+
 {% block conteudo %}
-    <h1>Usuários Cadastrados</h1>
-    <table>
-        <thead>
-            <tr><th>Username</th><th>CPF</th><th>Ações</th></tr>
-        </thead>
-        <tbody>
-            {% for usuario in usuarios %}
-            <tr>
-                <td>{{ usuario.username }}</td>
-                <td>{{ usuario.cpf }}</td>
-                <td>
-                    <a href="{% url 'detalhar_usuario' pk=usuario.pk %}">Ver</a> |
-                    <a href="{% url 'editar_usuario' pk=usuario.pk %}">Editar</a> |
-                    <a href="{% url 'deletar_usuario' pk=usuario.pk %}">Excluir</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="3">Nenhum usuário cadastrado.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <p><a href="{% url 'cadastrar_usuario' %}">Cadastrar novo usuário</a></p>
+    <h1 class="vs-title">Usuários Cadastrados</h1>
+    <p class="vs-sub mb-4">Contas de denunciantes registradas no sistema.</p>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>CPF</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="vs-avatar-lista">{{ usuario.username|first }}</span>
+                            <div>
+                                <strong>{{ usuario.username }}</strong>
+                                {% if usuario.email %}<div class="vs-sub small">{{ usuario.email }}</div>{% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ usuario.cpf }}</td>
+                    <td>
+                        <div class="vs-acoes">
+                            <a href="{% url 'detalhar_usuario' pk=usuario.pk %}" class="vs-icon-btn" aria-label="Ver" title="Ver"><i class="bi bi-eye"></i></a>
+                            {% if perms.usuarios.change_usuario %}
+                            <a href="{% url 'editar_usuario' pk=usuario.pk %}" class="vs-icon-btn" aria-label="Editar" title="Editar"><i class="bi bi-pencil"></i></a>
+                            {% endif %}
+                            {% if perms.usuarios.delete_usuario %}
+                            <a href="{% url 'deletar_usuario' pk=usuario.pk %}" class="vs-icon-btn perigo" aria-label="Excluir" title="Excluir"><i class="bi bi-trash"></i></a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="text-center text-muted py-4">Nenhum usuário cadastrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

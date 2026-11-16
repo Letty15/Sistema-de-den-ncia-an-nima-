@@ -23,7 +23,10 @@ def novo_conteudo(request):
     if request.method == 'POST':
         form = ConteudoEducativoForm(request.POST)
         if form.is_valid():
-            form.save()
+            conteudo = form.save(commit=False)
+            conteudo.autor = request.user      # sempre a CAE logada
+            conteudo.save()
+            form.save_m2m()                    # grava os canais de apoio marcados
             return redirect('listar_conteudo')
     else:
         form = ConteudoEducativoForm()

@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Excluir Conteúdo{% endblock %}
 
+{% block estilo %}<link rel="stylesheet" href="{% static 'css/conteudos-usuarios.css' %}">{% endblock %}
+
 {% block conteudo %}
-    <h1>Excluir "{{ conteudo.titulo }}"?</h1>
-    <p>Essa ação não pode ser desfeita.</p>
+    <div class="vs-card vs-form-card text-center">
+        <span class="vs-ico mx-auto mb-3" style="background:#FDE4E4;color:#B42318;"><i class="bi bi-trash3"></i></span>
+        <h1 class="vs-title">Excluir conteúdo?</h1>
+        <p class="vs-sub mb-0">
+            O conteúdo <strong>"{{ conteudo.titulo }}"</strong> será apagado.
+            Essa ação não pode ser desfeita.
+        </p>
 
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Confirmar exclusão</button>
-    </form>
-
-    <p><a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}">Cancelar</a></p>
+        <form method="post" class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+            {% csrf_token %}
+            <button type="submit" class="vs-btn vs-btn-perigo">Confirmar exclusão</button>
+            <a href="{% url 'detalhar_conteudo' pk=conteudo.pk %}" class="vs-btn vs-btn-outline">Cancelar</a>
+        </form>
+    </div>
 {% endblock %}

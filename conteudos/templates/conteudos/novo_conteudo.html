@@ -3,13 +3,9 @@
 {% block titulo %}Novo Conteúdo{% endblock %}
 
 {% block conteudo %}
-    <h1>Publicar Conteúdo Educativo</h1>
+    <h1 class="vs-title">Publicar Conteúdo Educativo</h1>
+    <p class="vs-sub mb-4">O conteúdo será publicado em seu nome, como membro da CAE.</p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Publicar</button>
-    </form>
-
-    <p><a href="{% url 'listar_conteudo' %}">Ver conteúdos publicados</a></p>
+    {% url 'listar_conteudo' as voltar %}
+    {% include 'conteudos/_form_card.html' with rotulo='Publicar' voltar=voltar %}
 {% endblock %}

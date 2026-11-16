@@ -1,0 +1,27 @@
+/* ==========================================================
+   Conteúdos educativos e usuários
+   (carregado pelos templates via {% block estilo %})
+   ========================================================== */
+
+/* ---------- Leitura de um conteúdo ---------- */
+.vs-artigo{max-width:820px}
+.vs-artigo-card{overflow:hidden}
+.vs-cover-grande{height:170px;font-size:4rem}
+.vs-artigo-corpo{padding:1.8rem 2rem 2rem}
+.vs-meta{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;margin:.3rem 0 0;color:var(--vs-suave);font-size:.9rem}
+.vs-meta i{margin-right:.25rem}
+
+/* Texto do conteúdo: parágrafos com respiro e largura confortável de leitura */
+.vs-corpo{margin-top:1.4rem;font-size:1.05rem;line-height:1.75;color:var(--vs-texto);overflow-wrap:anywhere}
+.vs-corpo p{margin-bottom:1.1rem}
+.vs-secao-titulo{margin:2rem 0 1rem;font-size:1.15rem;font-weight:800;color:var(--vs-header)}
+
+/* ---------- Usuários ---------- */
+.vs-avatar-lista{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--vs-rosa);color:var(--vs-header);
+  display:inline-grid;place-items:center;font-weight:800;text-transform:uppercase}
+.vs-avatar-lista.grande{width:64px;height:64px;font-size:1.6rem}
+.vs-acoes{display:flex;flex-wrap:wrap;gap:.5rem}
+
+/* ---------- Botão de ação destrutiva ---------- */
+.vs-page .vs-btn-perigo,.vs-page button[type=submit].vs-btn-perigo{background:#B42318;border-color:#B42318;color:#fff}
+.vs-page .vs-btn-perigo:hover,.vs-page button[type=submit].vs-btn-perigo:hover{background:#8E1B12;border-color:#8E1B12;color:#fff}

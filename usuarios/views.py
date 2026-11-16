@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from .models import Usuario
 from .forms import CadastroUsuarioForm, EditarUsuarioForm
 from django.views.decorators.http import require_POST
+from django.db.models import ProtectedError
 
 
 def cadastrar_usuario(request):
@@ -74,6 +75,7 @@ def editar_usuario(request, pk):
         form = EditarUsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Dados do usuário atualizados.')
             return redirect('detalhar_usuario', pk=usuario.pk)
     else:
         form = EditarUsuarioForm(instance=usuario)
@@ -85,6 +87,19 @@ def editar_usuario(request, pk):
 def deletar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
-        usuario.delete()
+        if usuario.pk == request.user.pk:
+            messages.error(request, 'Você não pode excluir a sua própria conta.', extra_tags='danger')
+            return redirect('detalhar_usuario', pk=usuario.pk)
+        try:
+            usuario.delete()
+        except ProtectedError:
+            # Denuncia.denunciante usa PROTECT: quem tem denúncias não pode ser apagada.
+            messages.error(
+                request,
+                'Este usuário tem denúncias registradas e não pode ser excluído.',
+                extra_tags='danger',
+            )
+            return redirect('detalhar_usuario', pk=usuario.pk)
+        messages.success(request, 'Usuário excluído.')
         return redirect('listar_usuario')
     return render(request, 'usuarios/deletar_usuario.html', {'usuario': usuario})
