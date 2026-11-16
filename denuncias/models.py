@@ -24,6 +24,11 @@ class Denuncia(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
     data_registro = models.DateField(auto_now_add=True)
 
+    class Meta:
+        permissions = [
+            ('alterar_status_denuncia', 'Pode alterar o status da denúncia'),
+        ]
+
     def save(self, *args, **kwargs):
         if not self.protocolo:
             self.protocolo = uuid.uuid4().hex[:12].upper()
@@ -39,5 +44,5 @@ class Imagem(models.Model):
     altura = models.IntegerField()
     formato = models.CharField(max_length=20)
     dados = models.ImageField(upload_to='evidencias/')
-    
-# Create your models here.
+
+    # Create your models here.

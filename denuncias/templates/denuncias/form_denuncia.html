@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}{% if denuncia %}Editar Denúncia{% else %}Nova Denúncia{% endif %}{% endblock %}
+
+{% block estilo %}<link rel="stylesheet" href="{% static 'css/denuncias.css' %}">{% endblock %}
 
 {% block conteudo %}
     <h1 class="vs-title">{% if denuncia %}Editar Denúncia{% else %}Registrar Denúncia{% endif %}</h1>
@@ -9,7 +12,7 @@
     </p>
 
     <div class="vs-card vs-form-card">
-        <form method="post" novalidate>
+        <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -25,6 +28,37 @@
                 </div>
             {% endfor %}
 
+            {% if evidencias_atuais %}
+                <div class="mb-3">
+                    <span class="vs-label">Evidências já enviadas</span>
+                    <div class="vs-galeria">
+                        {% for img in evidencias_atuais %}
+                            <label class="vs-thumb">
+                                <img src="{{ img.dados.url }}" alt="Evidência {{ forloop.counter }}">
+                                <span><input type="checkbox" name="remover_evidencias" value="{{ img.pk }}"> Remover</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="id_evidencias">{% if denuncia %}Adicionar evidências{% else %}Evidências{% endif %} (opcional)</label>
+                <div class="vs-upload">
+                    <input type="file" name="evidencias" id="id_evidencias"
+                           accept="image/jpeg,image/png,image/webp" multiple>
+                    <div class="vs-help">
+                        Até {{ max_evidencias }} imagens (JPG, PNG ou WEBP) de até {{ tamanho_max }} MB cada.
+                    </div>
+                </div>
+                <div id="vs-previews" class="vs-previews"></div>
+                {% if erros_evidencia %}
+                    <ul class="errorlist">
+                        {% for erro in erros_evidencia %}<li>{{ erro }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
             <button type="submit" class="w-100 mt-2">
                 {% if denuncia %}Salvar alterações{% else %}Enviar Denúncia{% endif %}
             </button>
@@ -38,4 +72,26 @@
             {% endif %}
         </p>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Pré-visualização das imagens escolhidas antes de enviar
+    (function () {
+        var input = document.getElementById('id_evidencias');
+        var area = document.getElementById('vs-previews');
+        if (!input || !area) return;
+        input.addEventListener('change', function () {
+            area.innerHTML = '';
+            Array.prototype.forEach.call(input.files, function (arquivo) {
+                if (!arquivo.type.startsWith('image/')) return;
+                var img = document.createElement('img');
+                img.alt = arquivo.name;
+                img.src = URL.createObjectURL(arquivo);
+                img.onload = function () { URL.revokeObjectURL(img.src); };
+                area.appendChild(img);
+            });
+        });
+    })();
+</script>
 {% endblock %}

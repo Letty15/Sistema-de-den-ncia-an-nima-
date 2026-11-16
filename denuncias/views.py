@@ -1,19 +1,39 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.contrib import messages
+from django.db import transaction
 from usuarios.models import Usuario
 from .models import Denuncia
-from .forms import DenunciaForm
+from .forms import DenunciaForm, StatusDenunciaForm
 from .regras import eh_dona, pode_ver_denuncia
+from .evidencias import (
+    MAX_EVIDENCIAS, TAMANHO_MAXIMO_MB,
+    validar_evidencias, salvar_evidencias, apagar_arquivos,
+)
+
+PERMISSAO_STATUS = 'denuncias.alterar_status_denuncia'
+
+
+def _contexto_upload():
+    return {'max_evidencias': MAX_EVIDENCIAS, 'tamanho_max': TAMANHO_MAXIMO_MB}
 
 
 @login_required
 @permission_required('denuncias.view_denuncia', raise_exception=True)
 def listar_denuncia(request):
-    """Só o CAE vê TODAS as denúncias (somente leitura)."""
-    denuncias = Denuncia.objects.all()
-    return render(request, 'denuncias/listar.html', {'denuncias': denuncias})
+    """Só o CAE vê TODAS as denúncias. Aceita ?status= para filtrar."""
+    status = request.GET.get('status', '')
+    denuncias = Denuncia.objects.select_related('tipo_violencia').order_by('-data_registro', '-id')
+    if status in dict(Denuncia.STATUS_CHOICES):
+        denuncias = denuncias.filter(status=status)
+    else:
+        status = ''
+    return render(request, 'denuncias/listar.html', {
+        'denuncias': denuncias,
+        'status_opcoes': Denuncia.STATUS_CHOICES,
+        'status_atual': status,
+    })
 
 
 @login_required
@@ -32,25 +52,41 @@ def nova_denuncia(request):
         messages.error(request, 'Sua conta não tem um perfil de denunciante associado.')
         return redirect('listar_conteudo')
 
+    erros_evidencia = []
     if request.method == 'POST':
         form = DenunciaForm(request.POST)
-        if form.is_valid():
-            denuncia = form.save(commit=False)
-            denuncia.denunciante = denunciante
-            denuncia.save()
+        try:
+            evidencias = validar_evidencias(request.FILES.getlist('evidencias'))
+        except ValidationError as e:
+            evidencias, erros_evidencia = [], e.messages
 
+        if form.is_valid() and not erros_evidencia:
+            with transaction.atomic():
+                denuncia = form.save(commit=False)
+                denuncia.denunciante = denunciante
+                denuncia.save()
+                salvar_evidencias(denuncia, evidencias)
             return redirect('denuncia_enviada', protocolo=denuncia.protocolo)
-        
     else:
         form = DenunciaForm()
-    return render(request, 'denuncias/form_denuncia.html', {'form': form})
+
+    return render(request, 'denuncias/form_denuncia.html', {
+        'form': form,
+        'erros_evidencia': erros_evidencia,
+        **_contexto_upload(),
+    })
+
 
 @login_required
 def detalhar_denuncia(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
     if not pode_ver_denuncia(request.user, denuncia):
         raise PermissionDenied
-    return render(request, 'denuncias/detalhar_denuncia.html', {'denuncia': denuncia})
+    return render(request, 'denuncias/detalhar_denuncia.html', {
+        'denuncia': denuncia,
+        'evidencias': denuncia.evidencias.all(),
+        'eh_cae': request.user.has_perm(PERMISSAO_STATUS),
+    })
 
 
 @login_required
@@ -60,14 +96,40 @@ def editar_denuncia(request, protocolo):
     if not eh_dona(request.user, denuncia):
         raise PermissionDenied
 
+    atuais = denuncia.evidencias.all()
+    erros_evidencia = []
+
     if request.method == 'POST':
         form = DenunciaForm(request.POST, instance=denuncia)
-        if form.is_valid():
-            form.save()
+
+        ids = [i for i in request.POST.getlist('remover_evidencias') if i.isdigit()]
+        a_remover = list(atuais.filter(pk__in=ids))
+        try:
+            novas = validar_evidencias(
+                request.FILES.getlist('evidencias'),
+                ja_existentes=atuais.count() - len(a_remover),
+            )
+        except ValidationError as e:
+            novas, erros_evidencia = [], e.messages
+
+        if form.is_valid() and not erros_evidencia:
+            with transaction.atomic():
+                form.save()
+                for imagem in a_remover:
+                    imagem.delete()
+                salvar_evidencias(denuncia, novas)
+            apagar_arquivos(a_remover)
             return redirect('detalhar_denuncia', protocolo=denuncia.protocolo)
     else:
         form = DenunciaForm(instance=denuncia)
-    return render(request, 'denuncias/form_denuncia.html', {'form': form, 'denuncia': denuncia})
+
+    return render(request, 'denuncias/form_denuncia.html', {
+        'form': form,
+        'denuncia': denuncia,
+        'evidencias_atuais': atuais,
+        'erros_evidencia': erros_evidencia,
+        **_contexto_upload(),
+    })
 
 
 @login_required
@@ -78,9 +140,34 @@ def deletar_denuncia(request, protocolo):
         raise PermissionDenied
 
     if request.method == 'POST':
+        imagens = list(denuncia.evidencias.all())
         denuncia.delete()
+        apagar_arquivos(imagens)
         return redirect('minhas_denuncias')
     return render(request, 'denuncias/deletar_denuncia.html', {'denuncia': denuncia})
+
+
+@login_required
+@permission_required(PERMISSAO_STATUS, raise_exception=True)
+def alterar_status_denuncia(request, protocolo):
+    """A CAE atualiza o andamento da denúncia (pendente, em análise, ...)."""
+    denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+    if request.method == 'POST':
+        form = StatusDenunciaForm(request.POST, instance=denuncia)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                f'Status da denúncia #{denuncia.protocolo} atualizado para "{denuncia.get_status_display()}".',
+            )
+            return redirect('detalhar_denuncia', protocolo=denuncia.protocolo)
+    else:
+        form = StatusDenunciaForm(instance=denuncia)
+    return render(request, 'denuncias/alterar_status_denuncia.html', {
+        'form': form,
+        'denuncia': denuncia,
+    })
+
 
 @login_required
 def denuncia_enviada(request, protocolo):

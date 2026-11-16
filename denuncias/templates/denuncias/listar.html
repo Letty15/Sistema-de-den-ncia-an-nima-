@@ -4,7 +4,14 @@
 
 {% block conteudo %}
     <h1 class="vs-title">Todas as Denúncias</h1>
-    <p class="vs-sub mb-4">Acompanhe as denúncias e atualize o andamento de cada uma.</p>
+    <p class="vs-sub mb-0">Acompanhe as denúncias e atualize o andamento de cada uma.</p>
+
+    <div class="vs-chips">
+        <a href="{% url 'listar_denuncia' %}" class="vs-chip {% if not status_atual %}active{% endif %}">Todas</a>
+        {% for valor, nome in status_opcoes %}
+            <a href="?status={{ valor }}" class="vs-chip {% if status_atual == valor %}active{% endif %}">{{ nome }}</a>
+        {% endfor %}
+    </div>
 
     <div class="table-responsive">
         <table>
@@ -30,14 +37,14 @@
                         <div class="d-flex flex-wrap gap-2">
                             <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}" class="btn">Ver</a>
                             <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="btn">Respostas</a>
-                            {% if perms.denuncias.change_denuncia %}
+                            {% if perms.denuncias.alterar_status_denuncia %}
                             <a href="{% url 'alterar_status_denuncia' protocolo=denuncia.protocolo %}" class="btn">Status</a>
                             {% endif %}
                         </div>
                     </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma denúncia registrada.</td></tr>
+                <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma denúncia encontrada.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

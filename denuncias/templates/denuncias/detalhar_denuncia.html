@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titulo %}Denúncia {{ denuncia.protocolo }}{% endblock %}
+
+{% block estilo %}<link rel="stylesheet" href="{% static 'css/denuncias.css' %}">{% endblock %}
 
 {% block conteudo %}
 <div style="max-width: 760px;">
@@ -27,9 +30,19 @@
 
         <div class="mb-3">
             <span class="vs-label">Evidências</span>
-            {% with total=denuncia.evidencias.count %}
-            <div class="vs-valor">{% if total > 0 %}{{ total }} imagem(ns){% else %}Nenhuma{% endif %}</div>
-            {% endwith %}
+            {% if evidencias %}
+                <div class="vs-galeria">
+                    {% for img in evidencias %}
+                        <button type="button" class="vs-thumb-btn" data-bs-toggle="modal"
+                                data-bs-target="#modalEvidencia" data-src="{{ img.dados.url }}"
+                                aria-label="Ampliar evidência {{ forloop.counter }}">
+                            <img src="{{ img.dados.url }}" alt="Evidência {{ forloop.counter }}">
+                        </button>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="vs-valor">Nenhuma</div>
+            {% endif %}
         </div>
 
         <div>
@@ -56,4 +69,26 @@
     </div>
 
 </div>
+
+<!-- Evidência ampliada -->
+<div class="modal fade" id="modalEvidencia" tabindex="-1" aria-label="Evidência ampliada" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body p-2 text-center">
+                <img id="modalEvidenciaImg" src="" alt="Evidência ampliada" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var modalEvidencia = document.getElementById('modalEvidencia');
+    if (modalEvidencia) {
+        modalEvidencia.addEventListener('show.bs.modal', function (evento) {
+            document.getElementById('modalEvidenciaImg').src = evento.relatedTarget.dataset.src;
+        });
+    }
+</script>
 {% endblock %}

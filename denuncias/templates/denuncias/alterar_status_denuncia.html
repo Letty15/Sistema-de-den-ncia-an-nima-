@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Alterar status — {{ denuncia.protocolo }}{% endblock %}
+
+{% block conteudo %}
+    <h1 class="vs-title">Alterar status</h1>
+    <p class="vs-sub mb-4">Denúncia #{{ denuncia.protocolo }} · {{ denuncia.tipo_violencia.nome }}</p>
+
+    <div class="vs-card vs-form-card">
+        <div class="mb-4">
+            <span class="vs-label">Status atual</span>
+            <span class="vs-badge s-{{ denuncia.status }}">{{ denuncia.get_status_display }}</span>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="w-100 mt-2">Salvar status</button>
+        </form>
+
+        <p class="text-center mt-3 mb-0">
+            <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}">Cancelar</a>
+        </p>
+    </div>
+{% endblock %}

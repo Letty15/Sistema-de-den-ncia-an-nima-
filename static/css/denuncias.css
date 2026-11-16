@@ -1,0 +1,25 @@
+/* ==========================================================
+   Denúncias: upload e galeria de evidências, botão de perigo
+   (carregado pelos templates via {% block estilo %})
+   ========================================================== */
+
+/* ---------- Upload de evidências ---------- */
+.vs-upload{padding:1.1rem 1.2rem;border:2px dashed var(--vs-input);border-radius:12px;background:var(--vs-fundo)}
+.vs-upload input[type=file]{width:100%;font:inherit;color:var(--vs-texto)}
+.vs-upload input[type=file]::file-selector-button{margin-right:1rem;padding:.55rem 1.2rem;border:0;border-radius:999px;
+  background:var(--vs-roxo);color:#fff;font-weight:700;cursor:pointer}
+.vs-upload input[type=file]::file-selector-button:hover{background:var(--vs-roxo-hover)}
+
+/* ---------- Miniaturas e galeria ---------- */
+.vs-galeria,.vs-previews{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.8rem}
+.vs-previews:empty{display:none}
+.vs-thumb,.vs-thumb-btn{width:130px;padding:0;border:1.5px solid var(--vs-input);border-radius:12px;background:#fff;
+  overflow:hidden;text-align:center;cursor:pointer}
+.vs-thumb img,.vs-thumb-btn img,.vs-previews img{display:block;width:100%;height:100px;object-fit:cover}
+.vs-thumb-btn:hover{border-color:var(--vs-roxo);box-shadow:0 0 0 .2rem rgba(106,27,130,.15)}
+.vs-thumb span{display:block;padding:.4rem .3rem;font-size:.82rem;font-weight:600;color:#B42318}
+.vs-previews img{width:130px;border:1.5px solid var(--vs-input);border-radius:12px}
+
+/* ---------- Botão de ação destrutiva ---------- */
+.vs-page .vs-btn-perigo,.vs-page button[type=submit].vs-btn-perigo{background:#B42318;border-color:#B42318;color:#fff}
+.vs-page .vs-btn-perigo:hover,.vs-page button[type=submit].vs-btn-perigo:hover{background:#8E1B12;border-color:#8E1B12;color:#fff}
