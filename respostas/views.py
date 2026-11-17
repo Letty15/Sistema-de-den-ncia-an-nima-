@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 from denuncias.models import Denuncia
 from denuncias.regras import pode_ver_denuncia
-from usuarios.models import Usuario
 from .models import RespostaDenuncia
 from .forms import RespostaForm
 
@@ -30,7 +29,7 @@ def nova_resposta(request, protocolo):
         if form.is_valid():
             resposta = form.save(commit=False)
             resposta.denuncia = denuncia
-            resposta.autor = Usuario.objects.filter(pk=request.user.pk).first()
+            resposta.autor = request.user
             resposta.save()
             messages.success(request, 'Resposta registrada.')
             return redirect('listar_respostas', protocolo=denuncia.protocolo)

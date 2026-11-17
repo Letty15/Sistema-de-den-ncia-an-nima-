@@ -1,5 +1,6 @@
 from django.db import models
 from usuarios.models import Usuario
+from django.conf import settings
 
 class TipoViolencia(models.Model):
     nome = models.CharField(max_length=100)
@@ -44,5 +45,38 @@ class Imagem(models.Model):
     altura = models.IntegerField()
     formato = models.CharField(max_length=20)
     dados = models.ImageField(upload_to='evidencias/')
+
+
+class HistoricoStatus(models.Model):
+    denuncia = models.ForeignKey(
+        Denuncia,
+        on_delete=models.CASCADE,
+        related_name='historico_status'
+    )
+
+    status_anterior = models.CharField(
+        max_length=20,
+        choices=Denuncia.STATUS_CHOICES
+    )
+
+    novo_status = models.CharField(
+        max_length=20,
+        choices=Denuncia.STATUS_CHOICES
+    )
+
+    alterado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
+    data_alteracao = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-data_alteracao']
+
+    def __str__(self):
+        return f'Alteração da denúncia {self.denuncia.protocolo}'
+
 
     # Create your models here.

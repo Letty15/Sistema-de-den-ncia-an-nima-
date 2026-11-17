@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.contrib import messages
 from django.db import transaction
 from usuarios.models import Usuario
-from .models import Denuncia
+from .models import Denuncia, HistoricoStatus
 from .forms import DenunciaForm, StatusDenunciaForm
 from .regras import eh_dona, pode_ver_denuncia
 from .evidencias import (
@@ -78,14 +78,21 @@ def nova_denuncia(request):
 
 
 @login_required
+
 def detalhar_denuncia(request, protocolo):
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+
     if not pode_ver_denuncia(request.user, denuncia):
         raise PermissionDenied
+
     return render(request, 'denuncias/detalhar_denuncia.html', {
         'denuncia': denuncia,
         'evidencias': denuncia.evidencias.all(),
         'eh_cae': request.user.has_perm(PERMISSAO_STATUS),
+
+        'historico': denuncia.historico_status.select_related(
+            'alterado_por'
+        ).all(),
     })
 
 
@@ -150,24 +157,58 @@ def deletar_denuncia(request, protocolo):
 @login_required
 @permission_required(PERMISSAO_STATUS, raise_exception=True)
 def alterar_status_denuncia(request, protocolo):
-    """A CAE atualiza o andamento da denúncia (pendente, em análise, ...)."""
+    """A CAE atualiza o andamento da denúncia."""
+
     denuncia = get_object_or_404(Denuncia, protocolo=protocolo)
+
     if request.method == 'POST':
-        form = StatusDenunciaForm(request.POST, instance=denuncia)
+        status_anterior = denuncia.status
+
+        form = StatusDenunciaForm(
+            request.POST,
+            instance=denuncia
+        )
+
         if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                f'Status da denúncia #{denuncia.protocolo} atualizado para "{denuncia.get_status_display()}".',
+            novo_status = form.cleaned_data['status']
+
+            if novo_status != status_anterior:
+                with transaction.atomic():
+                    form.save()
+
+                    HistoricoStatus.objects.create(
+                        denuncia=denuncia,
+                        status_anterior=status_anterior,
+                        novo_status=novo_status,
+                        alterado_por=request.user
+                    )
+
+                messages.success(
+                    request,
+                    'Status atualizado e histórico registrado.'
+                )
+            else:
+                messages.info(
+                    request,
+                    'O status selecionado já está definido.'
+                )
+
+            return redirect(
+                'detalhar_denuncia',
+                protocolo=denuncia.protocolo
             )
-            return redirect('detalhar_denuncia', protocolo=denuncia.protocolo)
+
     else:
         form = StatusDenunciaForm(instance=denuncia)
-    return render(request, 'denuncias/alterar_status_denuncia.html', {
-        'form': form,
-        'denuncia': denuncia,
-    })
 
+    return render(
+        request,
+        'denuncias/alterar_status_denuncia.html',
+        {
+            'form': form,
+            'denuncia': denuncia,
+        }
+    )
 
 @login_required
 def denuncia_enviada(request, protocolo):

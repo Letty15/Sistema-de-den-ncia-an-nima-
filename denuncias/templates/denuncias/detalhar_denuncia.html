@@ -1,11 +1,15 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
 {% block titulo %}Denúncia {{ denuncia.protocolo }}{% endblock %}
 
-{% block estilo %}<link rel="stylesheet" href="{% static 'css/denuncias.css' %}">{% endblock %}
+{% block estilo %}
+<link rel="stylesheet" href="{% static 'css/denuncias.css' %}">
+{% endblock %}
 
 {% block conteudo %}
+
 <div style="max-width: 760px;">
 
     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
@@ -13,9 +17,13 @@
             <h1 class="vs-title">Denúncia #{{ denuncia.protocolo }}</h1>
             <p class="vs-sub mb-0">Enviada em {{ denuncia.data_registro|date:"d/m/Y" }}</p>
         </div>
-        <span class="vs-badge s-{{ denuncia.status }}">{{ denuncia.get_status_display }}</span>
+
+        <span class="vs-badge s-{{ denuncia.status }}">
+            {{ denuncia.get_status_display }}
+        </span>
     </div>
 
+    <!-- Informações da denúncia -->
     <div class="vs-card vs-form-card">
 
         <div class="mb-3">
@@ -30,13 +38,18 @@
 
         <div class="mb-3">
             <span class="vs-label">Evidências</span>
+
             {% if evidencias %}
                 <div class="vs-galeria">
                     {% for img in evidencias %}
-                        <button type="button" class="vs-thumb-btn" data-bs-toggle="modal"
-                                data-bs-target="#modalEvidencia" data-src="{{ img.dados.url }}"
+                        <button type="button" class="vs-thumb-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEvidencia"
+                                data-src="{{ img.dados.url }}"
                                 aria-label="Ampliar evidência {{ forloop.counter }}">
-                            <img src="{{ img.dados.url }}" alt="Evidência {{ forloop.counter }}">
+
+                            <img src="{{ img.dados.url }}"
+                                 alt="Evidência {{ forloop.counter }}">
                         </button>
                     {% endfor %}
                 </div>
@@ -47,47 +60,130 @@
 
         <div>
             <span class="vs-label">Respostas</span>
+
             {% with total=denuncia.respostas.count %}
-            <div class="vs-valor">{% if total > 0 %}{{ total }} resposta(s){% else %}Nenhuma{% endif %}</div>
+                <div class="vs-valor">
+                    {% if total > 0 %}
+                        {{ total }} resposta(s)
+                    {% else %}
+                        Nenhuma
+                    {% endif %}
+                </div>
             {% endwith %}
         </div>
 
     </div>
 
+    <!-- Histórico de alterações de status -->
+    <div class="vs-card mt-4 p-4">
+
+        <h2 class="h5 fw-bold mb-3">
+            Histórico de alterações
+        </h2>
+
+        {% for registro in historico %}
+
+            <div class="border-bottom py-3">
+
+                <p class="mb-1">
+                    <strong>
+                        {{ registro.get_status_anterior_display }}
+                    </strong>
+
+                    <i class="bi bi-arrow-right"></i>
+
+                    <strong>
+                        {{ registro.get_novo_status_display }}
+                    </strong>
+                </p>
+
+                <small class="text-muted">
+                    Alterado por:
+                    {{ registro.alterado_por.username|default:"Usuário não identificado" }}
+                </small>
+
+                <br>
+
+                <small class="text-muted">
+                    {{ registro.data_alteracao|date:"d/m/Y H:i" }}
+                </small>
+
+            </div>
+
+        {% empty %}
+
+            <p class="text-muted mb-0">
+                Nenhuma alteração de status registrada.
+            </p>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- Botões de navegação -->
     <div class="d-flex flex-wrap gap-2 mt-4">
-        <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}" class="vs-btn">Ver respostas</a>
+
+        <a href="{% url 'listar_respostas' protocolo=denuncia.protocolo %}"
+           class="vs-btn">
+            Ver respostas
+        </a>
 
         {% if eh_cae %}
-            <a href="{% url 'alterar_status_denuncia' protocolo=denuncia.protocolo %}" class="vs-btn vs-btn-outline">Alterar status</a>
+            <a href="{% url 'alterar_status_denuncia' protocolo=denuncia.protocolo %}"
+               class="vs-btn vs-btn-outline">
+                Alterar status
+            </a>
         {% endif %}
 
         {% if perms.denuncias.view_denuncia %}
-            <a href="{% url 'listar_denuncia' %}" class="vs-btn vs-btn-outline">Voltar à lista</a>
+            <a href="{% url 'listar_denuncia' %}"
+               class="vs-btn vs-btn-outline">
+                Voltar à lista
+            </a>
         {% else %}
-            <a href="{% url 'minhas_denuncias' %}" class="vs-btn vs-btn-outline">Voltar à lista</a>
+            <a href="{% url 'minhas_denuncias' %}"
+               class="vs-btn vs-btn-outline">
+                Voltar à lista
+            </a>
         {% endif %}
+
     </div>
 
 </div>
 
 <!-- Evidência ampliada -->
-<div class="modal fade" id="modalEvidencia" tabindex="-1" aria-label="Evidência ampliada" aria-hidden="true">
+<div class="modal fade" id="modalEvidencia"
+     tabindex="-1"
+     aria-label="Evidência ampliada"
+     aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered modal-lg">
+
         <div class="modal-content">
+
             <div class="modal-body p-2 text-center">
-                <img id="modalEvidenciaImg" src="" alt="Evidência ampliada" class="img-fluid rounded">
+                <img id="modalEvidenciaImg"
+                     src=""
+                     alt="Evidência ampliada"
+                     class="img-fluid rounded">
             </div>
+
         </div>
+
     </div>
+
 </div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
     var modalEvidencia = document.getElementById('modalEvidencia');
+
     if (modalEvidencia) {
         modalEvidencia.addEventListener('show.bs.modal', function (evento) {
-            document.getElementById('modalEvidenciaImg').src = evento.relatedTarget.dataset.src;
+            document.getElementById('modalEvidenciaImg').src =
+                evento.relatedTarget.dataset.src;
         });
     }
 </script>
