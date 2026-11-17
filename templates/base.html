@@ -116,6 +116,14 @@
 
                         {% if perms.denuncias.add_denuncia %}
                         <li class="nav-item">
+                            <a href="{% url 'listar_notificacoes' %}"
+       class="nav-link {% if '/notificacoes/' in p %}active{% endif %}">
+                                <i class="nav-icon bi bi-bell"></i>
+                                <p>Notificações</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{% url 'nova_denuncia' %}"
                                class="nav-link {% if '/nova_denuncia/' in p %}active{% endif %}">
                                 <i class="nav-icon bi bi-pencil-square"></i>

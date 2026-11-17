@@ -7,4 +7,5 @@ urlpatterns = [
     path('detalhar_resposta/<int:id>/', views.detalhar_resposta, name='detalhar_resposta'),
     path('deletar_resposta/<int:id>/', views.deletar_resposta, name='deletar_resposta'),
     path('editar_resposta/<int:id>/', views.editar_resposta, name='editar_resposta'),
+    path('notificacoes/', views.listar_notificacoes, name='listar_notificacoes'),
 ]
