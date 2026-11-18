@@ -32,7 +32,7 @@
                     <td>{{ denuncia.tipo_violencia.nome }}</td>
                     <td>{{ denuncia.data_registro|date:"d/m/Y" }}</td>
                     <td><span class="vs-badge s-{{ denuncia.status }}">{{ denuncia.get_status_display }}</span></td>
-                    <td>{{ denuncia.respostas.count }}</td>
+                    <td>{{ denuncia.total_respostas }}</td>
                     <td>
                         <div class="d-flex flex-wrap gap-2">
                             <a href="{% url 'detalhar_denuncia' protocolo=denuncia.protocolo %}" class="btn">Ver</a>

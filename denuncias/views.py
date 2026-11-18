@@ -11,6 +11,7 @@ from .evidencias import (
     MAX_EVIDENCIAS, TAMANHO_MAXIMO_MB,
     validar_evidencias, salvar_evidencias, apagar_arquivos,
 )
+from django.db.models import Count
 
 PERMISSAO_STATUS = 'denuncias.alterar_status_denuncia'
 
@@ -24,7 +25,12 @@ def _contexto_upload():
 def listar_denuncia(request):
     """Só o CAE vê TODAS as denúncias. Aceita ?status= para filtrar."""
     status = request.GET.get('status', '')
-    denuncias = Denuncia.objects.select_related('tipo_violencia').order_by('-data_registro', '-id')
+    denuncias = (
+    Denuncia.objects
+    .select_related('tipo_violencia')
+    .annotate(total_respostas=Count('respostas'))
+    .order_by('-data_registro', '-id')
+)
     if status in dict(Denuncia.STATUS_CHOICES):
         denuncias = denuncias.filter(status=status)
     else:
@@ -39,8 +45,19 @@ def listar_denuncia(request):
 @login_required
 def minhas_denuncias(request):
     """Qualquer usuária logada vê só as denúncias que ela mesma registrou."""
-    denuncias = Denuncia.objects.filter(denunciante_id=request.user.id)
-    return render(request, 'denuncias/minhas_denuncias.html', {'denuncias': denuncias})
+
+    denuncias = (
+        Denuncia.objects
+        .filter(denunciante_id=request.user.id)
+        .select_related('tipo_violencia')
+        .order_by('-data_registro', '-id')
+    )
+
+    return render(
+        request,
+        'denuncias/minhas_denuncias.html',
+        {'denuncias': denuncias}
+    )
 
 
 @login_required
