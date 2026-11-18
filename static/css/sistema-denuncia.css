@@ -96,6 +96,7 @@ body{
 .vs-page table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;
   border:1px solid var(--vs-borda);border-radius:var(--vs-raio);overflow:hidden;box-shadow:var(--vs-sombra)}
 .vs-page th{background:var(--vs-menu);color:var(--vs-header);font-weight:700;text-align:left;padding:.85rem 1rem}
+.vs-page table.vs-tabela-ampla th,.vs-page table.vs-tabela-ampla td{padding:1.15rem 1.35rem}
 .vs-page td{padding:.85rem 1rem;border-top:1px solid var(--vs-borda);vertical-align:middle}
 .vs-page a.btn:not([class*="btn-"]),.vs-page .Criar,.vs-page .Detalhes .btn,.vs-page .Editar .btn,.vs-page .Deletar .btn{
   display:inline-block;background:var(--vs-roxo);color:#fff;border-radius:999px;padding:.45rem 1.1rem;

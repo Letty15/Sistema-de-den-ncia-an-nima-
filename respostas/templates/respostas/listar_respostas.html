@@ -3,45 +3,54 @@
 {% block titulo %}Lista de Respostas{% endblock %}
 
 {% block conteudo %}
-    <h1>Respostas relacionadas</h1>
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="vs-title">Respostas relacionadas</h1>
+            <p class="vs-sub mb-0">Denúncia #{{ denuncia.protocolo }}</p>
+        </div>
+        {% if perms.respostas.add_respostadenuncia %}
+        <a href="{% url 'nova_resposta' protocolo=denuncia.protocolo %}" class="vs-btn">
+            <i class="bi bi-plus-lg"></i> Adicionar
+        </a>
+        {% endif %}
+    </div>
 
-    {% if perms.respostas.add_respostadenuncia %}
-    <a href="{% url 'nova_resposta' protocolo=denuncia.protocolo %}" class="Criar">+Adicionar</a>
-    {% endif %}
-    <table cellpadding="8" cellspacing="0">
-                <thead>
-            <tr>
-                <th>Protocolo da Denúncia</th>
-                <th>Autor</th>
-                <th>Mensagem</th>
-                <th>Data</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for resposta in respostas %}
-            <tr>
-                <td>{{ resposta.denuncia.protocolo }}</td>
-                <td>{{ resposta.autor.username }}</td>
-                <td>{{ resposta.mensagem }}</td>
-                <td>{{ resposta.data }}</td>
-                <td>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{% url 'detalhar_resposta' id=resposta.id %}" class="btn">Detalhes</a>
-                        {% if perms.respostas.change_respostadenuncia %}
-                        <a href="{% url 'editar_resposta' id=resposta.id %}" class="btn">Editar</a>
-                        {% endif %}
-                        {% if perms.respostas.delete_respostadenuncia %}
-                        <a href="{% url 'deletar_resposta' id=resposta.id %}" class="btn">Deletar</a>
-                        {% endif %}
-                    </div>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5">Nenhuma resposta relacionada.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="vs-tabela-ampla">
+            <thead>
+                <tr>
+                    <th>Protocolo da Denúncia</th>
+                    <th>Autor</th>
+                    <th>Mensagem</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resposta in respostas %}
+                <tr>
+                    <td>#{{ resposta.denuncia.protocolo }}</td>
+                    <td>{{ resposta.autor.username|default:"CAE" }}</td>
+                    <td>{{ resposta.mensagem }}</td>
+                    <td>{{ resposta.data|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="{% url 'detalhar_resposta' id=resposta.id %}" class="btn">Detalhes</a>
+                            {% if perms.respostas.change_respostadenuncia %}
+                            <a href="{% url 'editar_resposta' id=resposta.id %}" class="btn">Editar</a>
+                            {% endif %}
+                            {% if perms.respostas.delete_respostadenuncia %}
+                            <a href="{% url 'deletar_resposta' id=resposta.id %}" class="btn">Deletar</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-5">Nenhuma resposta relacionada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

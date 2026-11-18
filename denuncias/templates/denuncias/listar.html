@@ -19,6 +19,7 @@
                 <tr>
                     <th>Protocolo</th>
                     <th>Tipo de violência</th>
+                    <th>Denunciante</th>
                     <th>Data</th>
                     <th>Status</th>
                     <th>Respostas</th>
@@ -30,6 +31,7 @@
                 <tr>
                     <td>#{{ denuncia.protocolo }}</td>
                     <td>{{ denuncia.tipo_violencia.nome }}</td>
+                    <td>{{ denuncia.denunciante.username }}</td>
                     <td>{{ denuncia.data_registro|date:"d/m/Y" }}</td>
                     <td><span class="vs-badge s-{{ denuncia.status }}">{{ denuncia.get_status_display }}</span></td>
                     <td>{{ denuncia.total_respostas }}</td>

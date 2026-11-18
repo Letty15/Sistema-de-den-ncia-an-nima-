@@ -5,7 +5,7 @@ from .models import Denuncia
 class DenunciaForm(forms.ModelForm):
     class Meta:
         model = Denuncia
-        fields = ['tipo_violencia', 'descricao']
+        fields = ['tipo_violencia', 'descricao', 'denunciante']
 
 
 class StatusDenunciaForm(forms.ModelForm):
